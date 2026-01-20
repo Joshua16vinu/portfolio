@@ -1,9 +1,9 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform, useSpring, useMotionValue } from "framer-motion";
 import FloatingElement from "../components/FloatingElement";
-import { Code, Database, Globe, Github, Linkedin } from "lucide-react";
+import { Code, Database, Globe, Github, Linkedin, FileText } from "lucide-react";
 
-const MagneticSocialButton = ({ href, children, ariaLabel }) => {
+const MagneticSocialButton = ({ href, children, ariaLabel, className }) => {
     const ref = useRef(null);
     const x = useMotionValue(0);
     const y = useMotionValue(0);
@@ -35,9 +35,9 @@ const MagneticSocialButton = ({ href, children, ariaLabel }) => {
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
             style={{ x: springX, y: springY }}
-            className="group relative p-4 border border-white/20 text-white rounded-full overflow-hidden flex items-center justify-center"
+            className={`group relative border border-white/20 text-white overflow-hidden flex items-center justify-center ${className || 'p-4 rounded-full'}`}
         >
-            <span className="relative z-10 group-hover:text-black transition-colors duration-300">
+            <span className="relative z-10 group-hover:text-black transition-colors duration-300 flex items-center gap-2">
                 {children}
             </span>
             <motion.div
@@ -81,8 +81,12 @@ const Hero = () => {
                         Project Intern @Infinity Pool Finnotech | CSE @FCRIT 2026
                     </p>
 
-                    <div className="flex gap-4 pt-4">
-                        <MagneticSocialButton href="https://linkedin.com/in/joshuna-vinu-koshy" ariaLabel="LinkedIn">
+                    <div className="flex flex-wrap gap-4 pt-4">
+                        <MagneticSocialButton href="/resume.pdf" ariaLabel="Resume" className="px-6 py-3 rounded-full">
+                            <FileText size={20} />
+                            <span className="font-medium">Resume</span>
+                        </MagneticSocialButton>
+                        <MagneticSocialButton href="https://linkedin.com/in/joshuavinukoshy" ariaLabel="LinkedIn">
                             <Linkedin size={24} />
                         </MagneticSocialButton>
                         <MagneticSocialButton href="https://github.com/Joshua16vinu" ariaLabel="GitHub">
