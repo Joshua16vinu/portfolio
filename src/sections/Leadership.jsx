@@ -66,7 +66,7 @@ const EditorWindow = ({ item, index }) => {
             </div>
 
             {/* Editor Content */}
-            <div className="p-4 md:p-6 font-mono text-xs md:text-sm overflow-x-auto flex-1">
+            <div className="p-4 md:p-6 font-mono text-xs md:text-sm overflow-x-auto scrollbar-hide flex-1">
                 <div className="flex gap-4 min-w-max">
                     {/* Line Numbers */}
                     <div className="flex flex-col text-right text-gray-600 select-none border-r border-border pr-4">

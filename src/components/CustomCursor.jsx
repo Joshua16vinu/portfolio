@@ -38,9 +38,9 @@ const CustomCursor = () => {
                 }}
                 transition={{
                     type: "spring",
-                    stiffness: 150,
-                    damping: 15,
-                    mass: 0.1
+                    stiffness: 800,
+                    damping: 35,
+                    mass: 0.5
                 }}
             />
             <motion.div
@@ -52,9 +52,9 @@ const CustomCursor = () => {
                 }}
                 transition={{
                     type: "spring",
-                    stiffness: 100,
-                    damping: 20,
-                    mass: 0.2
+                    stiffness: 400,
+                    damping: 30,
+                    mass: 0.8
                 }}
             />
         </>

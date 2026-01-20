@@ -162,7 +162,7 @@ const Experience = () => {
                         <div className="flex items-center justify-between mb-8 border-b border-border pb-4">
                             <div className="flex items-center gap-2 text-sm text-secondary">
                                 <GitCommit size={16} />
-                                <span>Milestones ({gitHistory.length})</span>
+                                <span>Commits ({gitHistory.length})</span>
                             </div>
                             <div className="text-xs font-mono text-secondary/50">
                                 Branch: <span className="text-vscode-blue">main</span>
