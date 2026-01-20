@@ -3,57 +3,57 @@ import { Award, Trophy, BookOpen, Star, Download, CheckCircle, Search, Filter } 
 
 const achievements = [
     {
-        id: "aca.rank.v1",
-        name: "Academic_Excellence",
-        publisher: "University_of_Mumbai",
+        id: "academic",
+        name: "Academic Excellence",
+        publisher: "University of Mumbai",
         icon: <Award size={24} className="text-vscode-blue" />,
-        version: "v3.1.0",
-        downloads: "Rank #1",
-        description: "Secured First Rank in TE Computer Engineering (9.69 CGPA).",
+        version: "2024",
+        status: "Rank #1",
+        description: "Secured First Rank in TE Computer Engineering with an outstanding 9.69 CGPA.",
         stars: 5,
         tags: ["Education", "Engineering"]
     },
     {
-        id: "hack.security.ai",
-        name: "Hacktivate_Solution",
-        publisher: "Hacktivate_2024",
+        id: "hackathon",
+        name: "Hacktivate Solution",
+        publisher: "Hacktivate 2024",
         icon: <Trophy size={24} className="text-vscode-purple" />,
-        version: "v2.0.0",
-        downloads: "2nd Runner-Up",
-        description: "AI-driven security solution developed during 24h hackathon.",
+        version: "2024",
+        status: "Winner",
+        description: "Secured second Runner-up for AI security solution developed during a competitive 24-hour hackathon.",
         stars: 5,
         tags: ["AI", "Security"]
     },
     {
-        id: "algo.codemania",
-        name: "CodeMania_Algo",
-        publisher: "CSI_Tech_Fest",
+        id: "codemania",
+        name: "CodeMania Contest",
+        publisher: "Computer Society of India",
         icon: <Trophy size={24} className="text-vscode-orange" />,
-        version: "v1.5.2",
-        downloads: "Top 3",
-        description: "Competitive programming algorithm optimization challenge.",
+        version: "2023",
+        status: "Top 3",
+        description: "Secured 3rd place in a state-level competitive programming and algorithm optimization challenge.",
         stars: 4,
-        tags: ["Algorithms", "Cpp"]
+        tags: ["Algorithms", "Logic"]
     },
     {
-        id: "exp.intern.fin",
-        name: "FinTech_Agent_Core",
-        publisher: "Infinity_Pool",
+        id: "internship",
+        name: "FinTech Agent Core",
+        publisher: "Infinity Pool",
         icon: <Award size={24} className="text-vscode-teal" />,
-        version: "v1.0.0",
-        downloads: "Distinction",
-        description: "Exemplary contributions to Financial AI Agent architecture.",
+        version: "2023",
+        status: "Distinction",
+        description: "Received excellence award for architectural contributions to Financial AI Agents & Backtesting Engine.",
         stars: 5,
         tags: ["Professional", "Finance"]
     },
     {
-        id: "res.paper.icnte",
-        name: "Fraud_Detection_Module",
-        publisher: "ICNTE_Conference",
+        id: "research",
+        name: "Fraud Detection Module",
+        publisher: "ICNTE Conference",
         icon: <BookOpen size={24} className="text-vscode-green" />,
-        version: "v0.9.beta",
-        downloads: "Accepted",
-        description: "Research paper on Reverse Auction System security.",
+        version: "2023",
+        status: "Published",
+        description: "Research paper on 'Reverse Auction System Security' accepted for international publication.",
         stars: 4,
         tags: ["Research", "Publication"]
     }
@@ -66,18 +66,18 @@ const ExtensionCard = ({ item, index }) => {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
             viewport={{ once: true }}
-            className="group flex gap-3 md:gap-4 p-3 md:p-4 hover:bg-white/5 rounded-lg transition-colors cursor-pointer border border-transparent hover:border-black/20"
+            className="group flex flex-col sm:flex-row gap-3 md:gap-4 p-3 md:p-4 hover:bg-white/5 rounded-lg transition-colors cursor-pointer border border-transparent hover:border-black/20"
         >
             {/* Icon Block */}
-            <div className="w-12 h-12 bg-surfaceLight border border-border rounded flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
+            <div className="flex-shrink-0 w-12 h-12 bg-surfaceLight border border-border rounded flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform mb-2 sm:mb-0">
                 {item.icon}
             </div>
 
             {/* Details Block */}
             <div className="flex-1 min-w-0">
-                <div className="flex justify-between items-start">
+                <div className="flex flex-wrap justify-between items-start gap-2">
                     <div>
-                        <h4 className="font-bold text-primary text-sm flex items-center gap-2">
+                        <h4 className="font-bold text-primary text-sm flex flex-wrap items-center gap-2">
                             {item.name}
                             <span className="text-[10px] font-normal text-secondary bg-surface px-1.5 rounded border border-border">
                                 {item.version}
@@ -88,12 +88,11 @@ const ExtensionCard = ({ item, index }) => {
                             <span className="hover:underline">{item.publisher}</span>
                         </div>
                     </div>
-                    {/* Install Button State */}
+                    {/* Status Badge */}
                     <div className="flex flex-col items-end gap-1">
-                        <button className="px-3 py-1 bg-surfaceLight border border-border text-secondary text-xs rounded hover:bg-vscode-blue hover:text-white transition-colors flex items-center gap-1.5">
-                            <span className="w-1.5 h-1.5 rounded-full bg-vscode-green"></span>
-                            Verified
-                        </button>
+                        <span className="px-2 py-0.5 bg-vscode-blue/10 border border-vscode-blue/20 text-vscode-blue text-[10px] rounded font-medium flex items-center gap-1.5">
+                            {item.status}
+                        </span>
                     </div>
                 </div>
 
@@ -101,7 +100,7 @@ const ExtensionCard = ({ item, index }) => {
                     {item.description}
                 </p>
 
-                <div className="flex items-center gap-4 mt-3">
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-3">
                     <div className="flex items-center gap-0.5">
                         {Array.from({ length: 5 }).map((_, i) => (
                             <Star
@@ -110,17 +109,11 @@ const ExtensionCard = ({ item, index }) => {
                                 className={i < item.stars ? "text-vscode-yellow fill-vscode-yellow" : "text-gray-600"}
                             />
                         ))}
-                        <span className="text-[10px] text-secondary ml-1">({Math.floor(Math.random() * 50) + 10})</span>
-                    </div>
-
-                    <div className="flex items-center gap-1 text-[10px] text-secondary">
-                        <Download size={10} />
-                        <span>{item.downloads}</span>
                     </div>
 
                     <div className="flex gap-1 ml-auto">
                         {item.tags.map((tag, i) => (
-                            <span key={i} className="text-[10px] bg-white/5 px-1.5 py-0.5 rounded text-secondary/60">
+                            <span key={i} className="text-[10px] bg-white/5 px-1.5 py-0.5 rounded text-secondary/60 whitespace-nowrap">
                                 {tag}
                             </span>
                         ))}
