@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform, useSpring, useMotionValue } from "framer-motion";
 import FloatingElement from "../components/FloatingElement";
 import { Code, Database, Globe, Github, Linkedin, FileText } from "lucide-react";
@@ -52,6 +52,45 @@ const Hero = () => {
     const { scrollYProgress } = useScroll({ target: containerRef });
     const y = useTransform(scrollYProgress, [0, 1], [0, 100]);
 
+    // Typewriter State
+    const [text, setText] = useState("");
+    const [isDeleting, setIsDeleting] = useState(false);
+    const [loopNum, setLoopNum] = useState(0);
+    const [typingSpeed, setTypingSpeed] = useState(150);
+
+    const toRotate = ["Joshua V K", "Tech Enthusiast"];
+
+    useEffect(() => {
+        const handleType = () => {
+            const i = loopNum % toRotate.length;
+            const fullText = toRotate[i];
+
+            setText(isDeleting
+                ? fullText.substring(0, text.length - 1)
+                : fullText.substring(0, text.length + 1)
+            );
+
+            // Dynamic speed adjustments
+            let delta = isDeleting ? 50 : 150;
+
+            if (!isDeleting && text === fullText) {
+                // Finished typing, pause
+                delta = 2000;
+                setIsDeleting(true);
+            } else if (isDeleting && text === '') {
+                // Finished deleting, moving to next word
+                setIsDeleting(false);
+                setLoopNum(loopNum + 1);
+                delta = 500;
+            }
+
+            setTypingSpeed(delta);
+        };
+
+        const timer = setTimeout(handleType, typingSpeed);
+        return () => clearTimeout(timer);
+    }, [text, isDeleting, loopNum, typingSpeed]);
+
     return (
         <section ref={containerRef} className="min-h-screen flex flex-col justify-center px-6 relative overflow-visible py-20">
             <div className="container-width grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20 items-center">
@@ -69,11 +108,11 @@ const Hero = () => {
                     </div>
 
                     <div className="space-y-2">
-                        <h1 className="text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight leading-tight text-primary">
-                            Joshua V K
+                        <h1 className="text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight leading-tight text-primary min-h-[1.2em]">
+                            {text}<span className="animate-pulse ml-1 text-vscode-blue">|</span>
                         </h1>
                         <h2 className="text-xl md:text-2xl text-secondary/80 font-light">
-                            Full Stack Developer & <span className="text-vscode-blue font-normal">AI/ML Architect</span>
+                            Full Stack Developer & <span className="text-vscode-blue font-normal">AI/ML Enthusiast</span>
                         </h2>
                     </div>
 
