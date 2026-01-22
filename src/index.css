@@ -5,12 +5,20 @@
 @tailwind utilities;
 
 @layer base {
+
+  html,
+  body,
+  #root {
+    @apply overflow-x-hidden;
+    max-width: 100vw;
+  }
+
   html {
     scroll-behavior: smooth;
   }
 
   body {
-    @apply bg-background text-primary font-sans antialiased overflow-x-hidden cursor-none;
+    @apply bg-background text-primary font-sans antialiased cursor-none;
   }
 }
 

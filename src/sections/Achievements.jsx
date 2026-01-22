@@ -97,27 +97,27 @@ const BentoCard = ({ item, index, onClick }) => {
             whileHover={{ y: -5, scale: 1.02 }}
             onClick={() => onClick(item)}
             className={`
-                group relative bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 cursor-pointer overflow-hidden
-                flex flex-col justify-between h-[280px] w-full transition-all duration-300
+                group relative bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-4 md:p-6 cursor-pointer overflow-hidden
+                flex flex-col justify-between h-auto min-h-[200px] md:h-[280px] w-full transition-all duration-300
                 ${item.color} hover:shadow-2xl hover:bg-white/[0.07]
             `}
         >
             {/* Holographic Header */}
-            <div className="flex justify-between items-start z-10">
-                <div className="p-3 bg-black/40 rounded-xl border border-white/5 backdrop-blur-sm">
+            <div className="flex justify-between items-start z-10 mb-2 md:mb-0">
+                <div className="p-2 md:p-3 bg-black/40 rounded-xl border border-white/5 backdrop-blur-sm">
                     {item.icon}
                 </div>
                 <div className="flex flex-col items-end gap-1">
-                    <span className="text-[10px] font-mono tracking-widest text-secondary/50 uppercase">{item.category}</span>
-                    <div className="flex items-center gap-1 text-[10px] bg-white/10 px-2 py-0.5 rounded-full text-secondary">
+                    <span className="text-[9px] md:text-[10px] font-mono tracking-widest text-secondary/50 uppercase">{item.category}</span>
+                    <div className="flex items-center gap-1 text-[9px] md:text-[10px] bg-white/10 px-2 py-0.5 rounded-full text-secondary">
                         <Hash size={10} /> {item.id}
                     </div>
                 </div>
             </div>
 
             {/* Content Body */}
-            <div className="z-10 mt-4">
-                <h3 className="text-xl font-bold text-white mb-2 leading-tight group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-secondary transition-all">
+            <div className="z-10 mt-2 md:mt-4 flex-grow">
+                <h3 className="text-lg md:text-xl font-bold text-white mb-2 leading-tight group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-secondary transition-all">
                     {item.name}
                 </h3>
                 <p className="text-xs text-secondary/70 leading-relaxed line-clamp-3">
@@ -126,7 +126,7 @@ const BentoCard = ({ item, index, onClick }) => {
             </div>
 
             {/* Tech Footer */}
-            <div className="z-10 mt-auto pt-4 border-t border-white/5 flex items-center justify-between">
+            <div className="z-10 mt-4 pt-3 md:pt-4 border-t border-white/5 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                     <span className={`text-xs font-bold font-mono ${item.accent}`}>{item.rank}</span>
                 </div>
@@ -208,7 +208,7 @@ const DetailModal = ({ isOpen, onClose, item }) => {
                         </div>
 
                         {/* Content Details Side */}
-                        <div className="w-full md:w-1/2 p-8 bg-[#0a0a0a] flex flex-col overflow-y-auto">
+                        <div className="w-full md:w-1/2 p-5 md:p-8 bg-[#0a0a0a] flex flex-col overflow-y-auto">
                             <div className="mb-6">
                                 <div className="flex items-center gap-2 mb-2">
                                     <span className={`px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider bg-white/5 ${item.accent || 'text-white'}`}>
@@ -266,7 +266,7 @@ const Achievements = () => {
     const [selectedItem, setSelectedItem] = useState(null);
 
     return (
-        <section id="achievements" className="py-24 px-6 relative">
+        <section id="achievements" className="py-24 px-6 relative overflow-hidden">
             {/* Background Atmosphere */}
             <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-vscode-purple/5 blur-[120px] rounded-full pointer-events-none -z-10" />
             <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-vscode-blue/5 blur-[120px] rounded-full pointer-events-none -z-10" />

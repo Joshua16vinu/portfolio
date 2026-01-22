@@ -1,132 +1,204 @@
-import { motion } from "framer-motion";
-import { Users, Mic, Presentation, Terminal, Minimize, Maximize, X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ChevronRight, FileCode, FileJson, FileCog, X } from "lucide-react";
+import { useState } from "react";
 
-const leadership = [
+const leadershipData = [
     {
         id: "chairperson.tsx",
         role: "Chairperson",
         org: "AIDL Club",
-        icon: <Users size={16} />,
-        context: "Leading 150+ members & 500+ participants",
-        code: [
-            { key: "impact", value: "\"Orchestrated national-level hackathons\"" },
-            { key: "initiative", value: "\"Mentored student projects\"" },
-            { key: "status", value: "\"Executed WebRush'24\"" }
-        ]
+        icon: <FileCode size={14} className="text-blue-400" />,
+        fileType: "react",
+        context: "Leading 150+ members",
+        code: `const Chairperson = {
+    organization: "AIDL Club",
+    scale: "150+ Members",
+    highlight: "WebRush'24 Hackathon",
+    impact: [
+        "Orchestrated National Event",
+        "Mentored 500+ Students",
+        "Curated Tech Curriculum"
+    ],
+    status: "ACTIVE"
+};`
     },
     {
         id: "tech_coord.config",
         role: "Tech_Coordinator",
         org: "FCRIT",
-        icon: <Mic size={16} />,
-        context: "Managed digital presence & technical sessions",
-        code: [
-            { key: "focus", value: "[\"ML\", \"Deep Learning\"]" },
-            { key: "events", value: "hands_on_workshops()" }
-        ]
+        icon: <FileCog size={14} className="text-yellow-400" />,
+        fileType: "config",
+        context: "Digital presence manager",
+        code: `module.exports = {
+    role: "Tech_Coordinator",
+    focus: ["ML", "Deep Learning"],
+    deliverables: {
+        workshops: "Hands-on Training",
+        digital: "Social Presence Growth"
+    },
+    execute: function() {
+        return "Knowledge Transfer";
+    }
+};`
     },
     {
         id: "speaker_log.json",
         role: "Guest_Speaker",
         org: "Cryptex'24",
-        icon: <Presentation size={16} />,
-        context: "Training 30+ students in AI concepts",
-        code: [
-            { key: "topic", value: "\"Foundational ML\"" },
-            { key: "audience", value: "30_students" }
-        ]
+        icon: <FileJson size={14} className="text-purple-400" />,
+        fileType: "json",
+        context: "AI concepts trainer",
+        code: `{
+    "event": "Cryptex_2024",
+    "topic": "Foundational ML",
+    "audience_size": 30,
+    "feedback": "4.8/5.0",
+    "materials": [
+        "Slides.pdf",
+        "Colab_Notebooks"
+    ]
+}`
     }
 ];
 
-const EditorWindow = ({ item, index }) => {
+const SyntaxHighlighter = ({ code }) => {
+    // Simple regex-based highlighting for a cleaner look
+    const lines = code.split('\n');
     return (
-        <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.15 }}
-            viewport={{ once: true }}
-            className={`group relative flex flex-col bg-surface border border-border rounded-lg overflow-hidden shadow-2xl hover:border-vscode-blue/50 transition-colors h-full ${index === 0 ? "md:col-span-2" : ""}`}
-        >
-            {/* Window Chrome / Tab Bar */}
-            <div className="flex items-center justify-between px-4 py-3 bg-surfaceLight border-b border-border">
-                <div className="flex items-center gap-2">
-                    {/* Tab */}
-                    <div className="flex items-center gap-2 text-xs font-mono text-primary bg-surface px-3 py-1.5 rounded-t-md border-t-2 border-vscode-blue">
-                        <span className="text-vscode-blue">{item.icon}</span>
-                        {item.id}
-                        <X size={12} className="ml-2 opacity-50 hover:opacity-100 cursor-pointer" />
-                    </div>
+        <div className="font-mono text-xs md:text-sm leading-6">
+            {lines.map((line, i) => (
+                <div key={i} className="table-row">
+                    <span className="table-cell text-right pr-4 text-gray-600 select-none w-8 text-[10px] md:text-xs pt-[2px]">{i + 1}</span>
+                    <span className="table-cell whitespace-pre-wrap text-gray-300">
+                        {line.split(/(":?[\w\s\d.'-]+"?)|(\/\/.*)/g).map((token, j) => {
+                            if (!token) return null;
+                            if (token.startsWith('"')) return <span key={j} className="text-[#ce9178]">{token}</span>; // Strings
+                            if (token.match(/\b(const|let|var|function|return|module|exports)\b/)) return <span key={j} className="text-[#569cd6]">{token}</span>; // Keywords
+                            if (token.endsWith(':')) return <span key={j} className="text-[#9cdcfe]">{token}</span>; // Keys
+                            if (token.match(/[{}\[\],;]/)) return <span key={j} className="text-[#ffd700]">{token}</span>; // Punctuation
+                            return token;
+                        })}
+                    </span>
                 </div>
-                {/* Window Controls */}
-                <div className="flex items-center gap-2 opacity-50">
-                    <Minimize size={12} />
-                    <Maximize size={12} />
-                    <X size={12} />
-                </div>
-            </div>
-
-            {/* Editor Content */}
-            <div className="p-4 md:p-6 font-mono text-xs md:text-sm overflow-x-auto scrollbar-hide flex-1">
-                <div className="flex gap-4 min-w-max">
-                    {/* Line Numbers */}
-                    <div className="flex flex-col text-right text-gray-600 select-none border-r border-border pr-4">
-                        {Array.from({ length: 6 }).map((_, i) => (
-                            <span key={i}>{i + 1}</span>
-                        ))}
-                    </div>
-
-                    {/* Code */}
-                    <div className="flex-1 space-y-1">
-                        <div>
-                            <span className="text-vscode-purple">const</span> <span className="text-vscode-blue">{item.role}</span> <span className="text-primary">=</span> <span className="text-vscode-yellow">{"{"}</span>
-                        </div>
-                        <div className="pl-4">
-                            <span className="text-vscode-teal">organization</span>: <span className="text-vscode-orange">"{item.org}"</span>,
-                        </div>
-                        <div className="pl-4">
-                            <span className="text-vscode-teal">context</span>: <span className="text-vscode-green">/* {item.context} */</span>,
-                        </div>
-
-                        {item.code.map((line, i) => (
-                            <div key={i} className="pl-4">
-                                <span className="text-vscode-teal">{line.key}</span>: <span className="text-vscode-orange">{line.value}</span>,
-                            </div>
-                        ))}
-
-                        <div>
-                            <span className="text-vscode-yellow">{"}"}</span>;
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* Status Bar style footer */}
-            <div className="px-4 py-1 bg-vscode-blue text-[10px] text-white font-mono flex justify-between items-center">
-                <span>TS REACT</span>
-                <span>Ln 6, Col 1</span>
-            </div>
-        </motion.div>
+            ))}
+        </div>
     );
 };
 
-const Leadership = () => {
-    return (
-        <section id="leadership" className="py-32 px-6">
-            <div className="container-width grid grid-cols-1 md:grid-cols-12 gap-12">
-                <div className="md:col-span-4">
-                    <h2 className="text-sm font-mono text-secondary sticky top-32 uppercase tracking-widest">
-                        06 // Leadership
-                    </h2>
-                </div>
+const SidebarItem = ({ item, isActive, onClick }) => (
+    <button
+        onClick={onClick}
+        className={`w-full flex items-center gap-2 px-3 py-1.5 text-xs transition-colors ${isActive ? "bg-[#37373d] text-white" : "text-secondary/70 hover:bg-[#2a2d2e] hover:text-white"}`}
+    >
+        {item.icon}
+        <span className="truncate">{item.id}</span>
+    </button>
+);
 
-                <div className="md:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {leadership.map((item, index) => (
-                        <EditorWindow
-                            key={index}
-                            item={item}
-                            index={index}
-                        />
-                    ))}
+const Tab = ({ item, isActive, onClick }) => (
+    <button
+        onClick={onClick}
+        className={`flex items-center gap-2 px-4 py-2 text-xs border-r border-[#1e1e1e] min-w-[120px] transition-colors cursor-pointer ${isActive ? "bg-[#1e1e1e] text-white border-t-2 border-t-vscode-blue" : "bg-[#2d2d2d] text-secondary/60 hover:bg-[#2a2d2e]"}`}
+    >
+        {item.icon}
+        <span className="truncate">{item.id}</span>
+        {isActive && <X size={12} className="ml-auto opacity-50 hover:text-white" />}
+    </button>
+);
+
+const Leadership = () => {
+    const [activeTab, setActiveTab] = useState(0);
+
+    return (
+        <section id="leadership" className="py-24 px-6 relative">
+            <div className="absolute top-1/4 left-0 w-[500px] h-[500px] bg-vscode-blue/5 blur-[120px] rounded-full pointer-events-none -z-10" />
+
+            <div className="container-width">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+
+                    {/* Header / Context */}
+                    <div className="lg:col-span-4 sticky top-32">
+                        <h2 className="text-sm font-mono text-secondary uppercase tracking-widest mb-4">
+                            06 // Leadership
+                        </h2>
+                        <h3 className="text-3xl md:text-4xl font-bold text-white mb-6">
+                            Verified <br />
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-vscode-blue to-vscode-teal">
+                                Contributions
+                            </span>
+                        </h3>
+                        <p className="text-secondary/70 leading-relaxed text-sm">
+                            I believe in open knowledge sharing. Here's a log of my initiatives in managing tech communities and mentoring student developers.
+                        </p>
+                    </div>
+
+                    {/* The IDE Workspace */}
+                    <div className="lg:col-span-8">
+                        <div className="bg-[#1e1e1e] rounded-xl overflow-hidden border border-[#333] shadow-2xl flex flex-col md:flex-row min-h-[400px]">
+
+                            {/* Sidebar - Explorer (Hidden on mobile) */}
+                            <div className="hidden md:flex flex-col w-48 bg-[#252526] border-r border-[#1e1e1e]">
+                                <div className="px-4 py-3 text-xs font-bold text-secondary/50 uppercase tracking-wider flex items-center justify-between">
+                                    Explorer <span className="text-[10px]">...</span>
+                                </div>
+                                <div className="flex flex-col">
+                                    <div className="px-2 py-1 text-secondary/70 flex items-center gap-1 text-xs font-bold">
+                                        <ChevronRight size={12} className="rotate-90" /> POR_2024
+                                    </div>
+                                    <div className="pl-2">
+                                        {leadershipData.map((item, index) => (
+                                            <SidebarItem
+                                                key={item.id}
+                                                item={item}
+                                                isActive={activeTab === index}
+                                                onClick={() => setActiveTab(index)}
+                                            />
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Main Editor Area */}
+                            <div className="flex-1 flex flex-col min-w-0">
+                                {/* Tabs */}
+                                <div className="flex overflow-x-auto scrollbar-hide bg-[#252526]">
+                                    {leadershipData.map((item, index) => (
+                                        <Tab
+                                            key={item.id}
+                                            item={item}
+                                            isActive={activeTab === index}
+                                            onClick={() => setActiveTab(index)}
+                                        />
+                                    ))}
+                                </div>
+
+                                {/* Breadcrumbs */}
+                                <div className="px-4 py-2 border-b border-[#333] flex items-center gap-2 text-xs text-secondary/50 font-mono">
+                                    <span>src</span>
+                                    <ChevronRight size={10} />
+                                    <span>leadership</span>
+                                    <ChevronRight size={10} />
+                                    <span className="text-white">{leadershipData[activeTab].role}</span>
+                                </div>
+
+                                {/* Code Area */}
+                                <div className="flex-1 p-6 relative overflow-auto scrollbar-hide bg-[#1e1e1e]">
+                                    <AnimatePresence mode="wait">
+                                        <motion.div
+                                            key={activeTab}
+                                            initial={{ opacity: 0, y: 10 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            exit={{ opacity: 0, y: -10 }}
+                                            transition={{ duration: 0.2 }}
+                                        >
+                                            <SyntaxHighlighter code={leadershipData[activeTab].code} />
+                                        </motion.div>
+                                    </AnimatePresence>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>

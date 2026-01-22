@@ -120,16 +120,16 @@ const Hero = () => {
                         Project Intern @Infinity Pool Finnotech | CSE @FCRIT 2026
                     </p>
 
-                    <div className="flex flex-wrap gap-4 pt-4">
-                        <MagneticSocialButton href="/resume.pdf" ariaLabel="Resume" className="px-6 py-3 rounded-full">
-                            <FileText size={20} />
-                            <span className="font-medium">Resume</span>
+                    <div className="flex flex-wrap items-center gap-3 pt-4">
+                        <MagneticSocialButton href="/resume.pdf" ariaLabel="Resume" className="px-5 py-2.5 md:px-6 md:py-3 rounded-full">
+                            <FileText size={18} className="md:w-5 md:h-5" />
+                            <span className="font-medium text-sm md:text-base">Resume</span>
                         </MagneticSocialButton>
-                        <MagneticSocialButton href="https://linkedin.com/in/joshuavinukoshy" ariaLabel="LinkedIn">
-                            <Linkedin size={24} />
+                        <MagneticSocialButton href="https://linkedin.com/in/joshuavinukoshy" ariaLabel="LinkedIn" className="p-3 md:p-4 rounded-full">
+                            <Linkedin size={20} className="md:w-6 md:h-6" />
                         </MagneticSocialButton>
-                        <MagneticSocialButton href="https://github.com/Joshua16vinu" ariaLabel="GitHub">
-                            <Github size={24} />
+                        <MagneticSocialButton href="https://github.com/Joshua16vinu" ariaLabel="GitHub" className="p-3 md:p-4 rounded-full">
+                            <Github size={20} className="md:w-6 md:h-6" />
                         </MagneticSocialButton>
                     </div>
                 </motion.div>

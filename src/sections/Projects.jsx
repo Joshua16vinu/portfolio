@@ -113,26 +113,26 @@ const TerminalEntry = ({ project, index, onOpenOverview }) => {
         >
             {/* Project Header Line */}
             <div className="flex flex-wrap items-center gap-2 mb-2">
-                <span className="text-vscode-green">➜</span>
-                <span className="text-vscode-blue font-bold">{project.name}</span>
-                <span className="text-secondary/50 text-xs">@{project.version}</span>
-                <span className={`text-[10px] px-1.5 py-0.5 rounded border ${project.color ? project.color : "text-vscode-green border-vscode-green/50"} ml-auto md:ml-2`}>
+                <span className="text-vscode-green shrink-0">➜</span>
+                <span className="text-vscode-blue font-bold break-all sm:break-normal">{project.name}</span>
+                <span className="text-secondary/50 text-xs shrink-0">@{project.version}</span>
+                <span className={`text-[10px] px-1.5 py-0.5 rounded border ${project.color ? project.color : "text-vscode-green border-vscode-green/50"} ml-auto md:ml-2 shrink-0`}>
                     {project.status}
                 </span>
             </div>
 
             {/* Config Block */}
             <div className="pl-4 md:pl-6 border-l border-border/50 space-y-1">
-                <div className="flex gap-2 text-secondary/80">
-                    <span className="text-vscode-purple min-w-[80px]">desc</span>
-                    <span className="line-clamp-1">{project.description}</span>
+                <div className="flex flex-col sm:flex-row gap-1 sm:gap-2 text-secondary/80">
+                    <span className="text-vscode-purple min-w-[60px] sm:min-w-[80px] shrink-0">desc</span>
+                    <span className="line-clamp-2 sm:line-clamp-1 text-xs sm:text-sm">{project.description}</span>
                 </div>
 
-                <div className="flex gap-2 text-secondary/80">
-                    <span className="text-vscode-purple min-w-[80px]">stack</span>
-                    <div className="flex flex-wrap gap-2">
+                <div className="flex flex-col sm:flex-row gap-1 sm:gap-2 text-secondary/80">
+                    <span className="text-vscode-purple min-w-[60px] sm:min-w-[80px] shrink-0">stack</span>
+                    <div className="flex flex-wrap gap-2 text-xs sm:text-sm">
                         {project.stack.slice(0, 4).map((tech) => (
-                            <span key={tech} className="text-vscode-orange hidden md:inline">
+                            <span key={tech} className="text-vscode-orange">
                                 "{tech}"
                             </span>
                         ))}
@@ -140,9 +140,9 @@ const TerminalEntry = ({ project, index, onOpenOverview }) => {
                     </div>
                 </div>
 
-                <div className="flex gap-2 text-secondary/80 pt-1">
-                    <span className="text-vscode-purple min-w-[80px]">action</span>
-                    <div className="flex gap-4">
+                <div className="flex flex-col sm:flex-row gap-1 sm:gap-2 text-secondary/80 pt-1">
+                    <span className="text-vscode-purple min-w-[60px] sm:min-w-[80px] shrink-0">action</span>
+                    <div className="flex flex-wrap gap-3 sm:gap-4 text-xs sm:text-sm">
                         <button
                             onClick={() => onOpenOverview(project)}
                             className="flex items-center gap-1 text-vscode-blue hover:text-vscode-blue/80 hover:underline transition-colors cursor-pointer"
@@ -201,7 +201,7 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
                     </div>
 
                     {/* Right: Details */}
-                    <div className="w-full md:w-7/12 p-8 flex flex-col overflow-y-auto custom-scrollbar">
+                    <div className="w-full md:w-7/12 p-5 md:p-8 flex flex-col overflow-y-auto custom-scrollbar">
                         <div className="mb-8">
                             <div className="flex items-center gap-3 mb-2">
                                 <Folder size={16} className="text-secondary" />
