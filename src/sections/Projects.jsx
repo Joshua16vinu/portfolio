@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Terminal, ArrowRight, ExternalLink, Github, ChevronRight, Folder, Code, Cpu, Database, Globe, X, Scan, ChevronLeft, Maximize2 } from "lucide-react";
+import { Terminal, ArrowRight, ExternalLink, Github, ChevronRight, Folder, Code, Cpu, Database, Globe, X, Scan, ChevronLeft, Maximize2, Command } from "lucide-react";
 
 // Placeholder images logic can be added later, for now we rely on the clean "No Media" UI
 const projects = [
@@ -109,51 +109,49 @@ const TerminalEntry = ({ project, index, onOpenOverview }) => {
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ delay: index * 0.1 }}
             viewport={{ once: true }}
-            className="mb-24 last:mb-0 font-mono text-sm group"
+            className="group relative border-l-2 border-transparent hover:border-vscode-blue hover:bg-white/[0.02] transition-all duration-300 pl-4 py-4 md:py-6 mb-4"
         >
             {/* Project Header Line */}
-            <div className="flex flex-wrap items-center gap-2 mb-2">
-                <span className="text-vscode-green shrink-0">➜</span>
-                <span className="text-vscode-blue font-bold break-all sm:break-normal">{project.name}</span>
-                <span className="text-secondary/50 text-xs shrink-0">@{project.version}</span>
-                <span className={`text-[10px] px-1.5 py-0.5 rounded border ${project.color ? project.color : "text-vscode-green border-vscode-green/50"} ml-auto md:ml-2 shrink-0`}>
+            <div className="flex flex-wrap items-center gap-3 mb-3">
+                <span className="text-vscode-blue font-bold text-base md:text-lg break-all sm:break-normal cursor-pointer hover:underline" onClick={() => onOpenOverview(project)}>
+                    {project.name}
+                </span>
+                <span className="text-secondary/40 text-xs font-mono">@{project.version}</span>
+                <span className={`text-[9px] px-2 py-0.5 rounded-full border bg-black/50 backdrop-blur-sm ${project.color ? project.color : "text-vscode-green border-vscode-green/50"} ml-auto md:ml-2 shrink-0`}>
                     {project.status}
                 </span>
             </div>
 
-            {/* Config Block */}
-            <div className="pl-4 md:pl-6 border-l border-border/50 space-y-1">
-                <div className="flex flex-col sm:flex-row gap-1 sm:gap-2 text-secondary/80">
-                    <span className="text-vscode-purple min-w-[60px] sm:min-w-[80px] shrink-0">desc</span>
-                    <span className="line-clamp-2 sm:line-clamp-1 text-xs sm:text-sm">{project.description}</span>
-                </div>
+            {/* Description */}
+            <p className="text-secondary/70 text-xs md:text-sm leading-relaxed mb-4 max-w-3xl">
+                {project.description}
+            </p>
 
-                <div className="flex flex-col sm:flex-row gap-1 sm:gap-2 text-secondary/80">
-                    <span className="text-vscode-purple min-w-[60px] sm:min-w-[80px] shrink-0">stack</span>
-                    <div className="flex flex-wrap gap-2 text-xs sm:text-sm">
-                        {project.stack.slice(0, 4).map((tech) => (
-                            <span key={tech} className="text-vscode-orange">
-                                "{tech}"
-                            </span>
-                        ))}
-                        {project.stack.length > 4 && <span className="text-secondary/50">...</span>}
-                    </div>
-                </div>
+            {/* Tech Stack Badges */}
+            <div className="flex flex-wrap gap-2 mb-4">
+                {project.stack.map((tech) => (
+                    <span key={tech} className="px-2 py-1 bg-[#1e1e1e] border border-white/5 rounded text-[10px] text-vscode-orange font-mono">
+                        {tech}
+                    </span>
+                ))}
+            </div>
 
-                <div className="flex flex-col sm:flex-row gap-1 sm:gap-2 text-secondary/80 pt-1">
-                    <span className="text-vscode-purple min-w-[60px] sm:min-w-[80px] shrink-0">action</span>
-                    <div className="flex flex-wrap gap-3 sm:gap-4 text-xs sm:text-sm">
-                        <button
-                            onClick={() => onOpenOverview(project)}
-                            className="flex items-center gap-1 text-vscode-blue hover:text-vscode-blue/80 hover:underline transition-colors cursor-pointer"
-                        >
-                            [<Maximize2 size={12} /> view_details]
-                        </button>
-                        <a href={project.links.repo} className="flex items-center gap-1 hover:text-primary hover:underline transition-colors opacity-50 hover:opacity-100">
-                            source
-                        </a>
-                    </div>
-                </div>
+            {/* Action Buttons */}
+            <div className="flex gap-3 mt-2">
+                <button
+                    onClick={() => onOpenOverview(project)}
+                    className="flex items-center gap-1.5 px-3 py-1.5 bg-vscode-blue/10 hover:bg-vscode-blue/20 text-vscode-blue border border-vscode-blue/20 rounded text-xs font-mono transition-colors cursor-pointer group/btn"
+                >
+                    open_details
+                    <Maximize2 size={10} className="group-hover/btn:scale-110 transition-transform" />
+                </button>
+                <a
+                    href={project.links.repo}
+                    className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 hover:bg-white/10 text-secondary border border-white/10 rounded text-xs font-mono transition-colors cursor-pointer group/btn"
+                >
+                    view_source
+                    <ArrowRight size={10} className="group-hover/btn:-rotate-45 transition-transform" />
+                </a>
             </div>
         </motion.div>
     );
@@ -201,7 +199,7 @@ const ProjectModal = ({ isOpen, onClose, project }) => {
                     </div>
 
                     {/* Right: Details */}
-                    <div className="w-full md:w-7/12 p-5 md:p-8 flex flex-col overflow-y-auto custom-scrollbar">
+                    <div className="w-full md:w-7/12 p-5 md:p-8 flex flex-col overflow-y-auto scrollbar-hide">
                         <div className="mb-8">
                             <div className="flex items-center gap-3 mb-2">
                                 <Folder size={16} className="text-secondary" />
@@ -278,61 +276,81 @@ const Projects = () => {
         <section id="projects" className="py-32 px-6">
             <div className="container-width grid grid-cols-1 md:grid-cols-12 gap-12">
                 {/* Header Section */}
-                <div className="md:col-span-4">
-                    <h2 className="text-sm font-mono text-secondary sticky top-24 uppercase tracking-widest mb-4">
+                <div className="md:col-span-4 self-start sticky top-24">
+                    <h2 className="text-sm font-mono text-secondary uppercase tracking-widest mb-4">
                         03 // Projects
                     </h2>
-                    <div className="sticky top-40 hidden md:block">
-                        <div className="p-4 bg-surface border border-border rounded-lg font-mono text-xs shadow-xl">
-                            <div className="flex items-center gap-2 mb-2 border-b border-border pb-2 text-secondary">
-                                <Terminal size={12} />
-                                <span>bash — 80x24</span>
+                    <h3 className="text-4xl font-bold text-white mb-6">
+                        System <br />
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-vscode-blue to-vscode-green">
+                            Architectures
+                        </span>
+                    </h3>
+                    <div className="hidden md:block p-6 bg-gradient-to-br from-white/5 to-transparent border border-white/10 rounded-2xl backdrop-blur-sm">
+                        <div className="flex items-center gap-3 mb-4 text-white">
+                            <Command size={20} className="text-vscode-blue" />
+                            <span className="font-mono text-sm font-bold">Quick Actions</span>
+                        </div>
+                        <p className="text-secondary/60 text-xs leading-relaxed mb-4">
+                            Select a project node to view detailed telemetry, architecture diagrams, and source code availability.
+                        </p>
+                        <div className="text-[10px] font-mono text-secondary/40 space-y-1">
+                            <div className="flex justify-between">
+                                <span>TOTAL_MODULES:</span>
+                                <span>{projects.length}</span>
                             </div>
-                            <div className="space-y-1 text-secondary/70">
-                                <p><span className="text-vscode-green">user@portfolio</span>:<span className="text-vscode-blue">~</span>$ list-projects --all</p>
-                                <p>Loading modules...</p>
-                                <p className="text-vscode-green">Done.</p>
-                                <p className="mt-2 text-primary">Found 5 shipped projects matching criteria.</p>
+                            <div className="flex justify-between">
+                                <span>STATUS:</span>
+                                <span className="text-vscode-green">ONLINE</span>
                             </div>
                         </div>
-                        <p className="mt-6 text-sm text-secondary/60 font-mono">
-                            // Executing listing of selected works.
-                            <br />// Use links to navigate.
-                        </p>
                     </div>
                 </div>
 
                 {/* Main Terminal Window */}
                 <div className="md:col-span-8">
-                    <div className="bg-surfaceLight/20 border border-border rounded-lg p-4 md:p-6 font-mono text-xs md:text-sm relative overflow-hidden md:overflow-x-auto min-h-[500px] md:min-h-[600px] flex flex-col">
-                        {/* Terminal Header */}
-                        <div className="flex gap-2 mb-6 opacity-30 shrink-0">
-                            <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-red-500" />
-                            <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-yellow-500" />
-                            <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-green-500" />
+                    <div className="bg-[#0d1117]/80 backdrop-blur-xl border border-white/10 rounded-xl overflow-hidden shadow-2xl relative">
+                        {/* Terminal Window Header */}
+                        <div className="flex items-center justify-between px-4 py-3 bg-white/5 border-b border-white/5">
+                            <div className="flex gap-2">
+                                <div className="w-3 h-3 rounded-full bg-[#ff5f56]" />
+                                <div className="w-3 h-3 rounded-full bg-[#ffbd2e]" />
+                                <div className="w-3 h-3 rounded-full bg-[#27c93f]" />
+                            </div>
+                            <div className="flex items-center gap-2 opacity-50 text-xs font-mono">
+                                <Terminal size={12} />
+                                <span>zsh — joshua@portfolio</span>
+                            </div>
+                            <div className="w-10" /> {/* Spacer for balance */}
                         </div>
 
                         {/* CLI Output Stream */}
-                        <div className="space-y-2 overflow-x-auto pb-4 flex-grow">
-                            <div className="text-secondary/50 mb-6 whitespace-nowrap">
-                                <span className="text-vscode-green">➜</span> <span className="text-vscode-blue">~</span> list-projects --shipped --sort=date --verbose
+                        <div className="p-6 md:p-8 space-y-2">
+                            <div className="text-secondary/50 mb-8 font-mono text-xs">
+                                <span className="text-vscode-green">joshua@portfolio</span>
+                                <span className="text-white">:</span>
+                                <span className="text-vscode-blue">~/projects</span>
+                                <span className="text-white">$ </span>
+                                <span>list --all</span>
                             </div>
 
-                            {projects.map((project, index) => (
-                                <TerminalEntry
-                                    key={index}
-                                    project={project}
-                                    index={index}
-                                    onOpenOverview={setSelectedProject}
-                                />
-                            ))}
+                            <div className="space-y-6">
+                                {projects.map((project, index) => (
+                                    <TerminalEntry
+                                        key={index}
+                                        project={project}
+                                        index={index}
+                                        onOpenOverview={setSelectedProject}
+                                    />
+                                ))}
+                            </div>
 
                             {/* Prompt at bottom */}
                             <motion.div
                                 initial={{ opacity: 0 }}
                                 whileInView={{ opacity: 1 }}
                                 transition={{ delay: 0.5 }}
-                                className="flex items-center gap-2 mt-8 pt-4 border-t border-border/30"
+                                className="flex items-center gap-2 mt-8 pt-4 border-t border-white/5 font-mono text-xs"
                             >
                                 <span className="text-vscode-green">➜</span>
                                 <span className="text-vscode-blue">~</span>

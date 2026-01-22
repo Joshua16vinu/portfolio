@@ -9,7 +9,7 @@ import Achievements from "./sections/Achievements";
 import Contact from "./sections/Contact";
 
 
-import CustomCursor from "./components/CustomCursor";
+
 
 import Experience from "./sections/Experience";
 
@@ -18,7 +18,6 @@ import Experience from "./sections/Experience";
 function App() {
   return (
     <div className="text-primary min-h-screen font-sans selection:bg-white selection:text-black">
-      <CustomCursor />
       <Background />
       <Navbar />
 
