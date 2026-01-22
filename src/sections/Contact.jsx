@@ -67,7 +67,7 @@ const Contact = () => {
                         </div>
 
                         <p className="text-secondary text-lg max-w-lg leading-relaxed">
-                            Whether it's an AI breakthrough, a SaaS product, or a technical inquiry — I'm always open to discussing new frontiers.
+                            Whether it's an AI breakthrough, a SaaS product, or a technical inquiry; I'm always open to discussing new frontiers.
                         </p>
 
                         <div className="pt-6">
@@ -111,9 +111,7 @@ const Contact = () => {
                     </div>
                 </div>
 
-                <div className="mt-32 pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-6">
-                    <p className="text-xs font-mono text-secondary/40 h-full">© {new Date().getFullYear()} JOSHUA V K. ALL SYSTEMS OPERATIONAL.</p>
-
+                <div className="mt-32 pt-8 border-t border-border flex flex-col md:flex-row justify-center items-center gap-6">
                     <div className="flex gap-8">
                         <a href="https://linkedin.com/in/joshuavinukoshy" className="text-xs font-mono text-secondary hover:text-white transition-colors flex items-center gap-2">
                             LINKEDIN <ArrowUpRightIcon />
