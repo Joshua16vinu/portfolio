@@ -158,17 +158,17 @@ const DetailModal = ({ isOpen, onClose, item }) => {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="fixed inset-0 z-[10000] bg-black/80 backdrop-blur-md flex items-center justify-center p-4"
+                    className="fixed inset-0 z-[10000] bg-black/95 md:bg-black/80 backdrop-blur-none md:backdrop-blur-md flex items-center justify-center p-4"
                     onClick={onClose}
                 >
-                    <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none" />
+                    <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none hidden md:block" />
 
                     <motion.div
                         initial={{ scale: 0.95, y: 20 }}
                         animate={{ scale: 1, y: 0 }}
                         exit={{ scale: 0.95, y: 20 }}
                         onClick={(e) => e.stopPropagation()}
-                        className="w-full max-w-4xl bg-[#0a0a0a] border border-white/10 rounded-3xl overflow-hidden shadow-2xl relative flex flex-col md:flex-row h-auto max-h-[85vh]"
+                        className="w-full max-w-4xl bg-[#111] md:bg-[#0a0a0a] border border-white/10 rounded-2xl md:rounded-3xl overflow-hidden shadow-xl md:shadow-2xl relative flex flex-col md:flex-row h-auto max-h-[85vh] will-change-transform transform-gpu"
                     >
                         {/* Close Button */}
                         <button
