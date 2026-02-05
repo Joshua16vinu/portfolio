@@ -2,10 +2,10 @@ import { motion } from "framer-motion";
 import FloatingElement from "../components/FloatingElement";
 
 const skillCategories = [
-    { name: "Programming Languages", skills: ["Python", "C++", "Java", "JavaScript", "SQL", "HTML/CSS"] },
-    { name: "AI/ML Frameworks", skills: ["TensorFlow", "PyTorch", "Keras", "scikit-learn", "OpenCV", "Hugging Face", "NLTK", "SpaCy"] },
-    { name: "Full Stack Development", skills: ["React", "Node.js", "Express.js", "Flask", "MongoDB", "PostgreSQL", "MySQL", "RESTful APIs"] },
-    { name: "Tools & Platforms", skills: ["Git/GitHub", "Docker", "AWS", "Google Cloud", "Azure", "CI/CD", "Jupyter"] }
+    { name: "Programming Languages", skills: ["Python", "JavaScript (ES6+)", "TypeScript", "Java", "C++", "SQL"] },
+    { name: "AI/ML Frameworks", skills: ["TensorFlow", "Keras", "Generative AI", "LangChain", "RAG Pipelines", "scikit-learn", "OpenCV", "NLTK"] },
+    { name: "Full Stack Development", skills: ["React.js", "Next.js", "Node.js", "FastAPI", "PostgreSQL", "MongoDB", "Firebase", "WebSockets"] },
+    { name: "Tools & Platforms", skills: ["Git/GitHub", "Docker", "AWS", "Google Cloud", "Vertex AI", "CI/CD", "Jupyter"] }
 ];
 
 const Skills = () => {

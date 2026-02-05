@@ -30,15 +30,15 @@ const projects = [
         version: "v1.1.2",
         status: "STABLE",
         type: "FINTECH",
-        description: "Modular market data evaluation framework capable of stress-testing strategies across varying asset classes without code modification.",
-        longDescription: "A robust backtesting engine built to eliminate look-ahead bias and overfitting. It abstracts the strategy logic from the execution engine, allowing traders to swap 'Signal Generators' and 'Risk Modules' plug-and-play. It supports tick-level data replay and simulates realistic exchange latencies and slippage models.",
+        description: "Backtrader-powered engine accommodating multiple trading strategies with 15+ custom indicators.",
+        longDescription: "Engineered a robust backtesting framework that accommodates multiple trading strategies through optimized event-driven execution. It features optimized data loaders with chunked OHLCV ingestion and memory-mapped datasets, eliminating look-ahead bias.",
         features: [
-            "Event-Driven Architecture: Simulates order book dynamics accurately.",
-            "Walk-Forward Optimization: Prevents curve fitting by rolling calibration windows.",
-            "Distributed Computing: Parallelizes tests across CPU cores for velocity.",
-            "Reporting: Generates institutional-grade tear sheets (Sharpe, Sortino, Drawdown)."
+            "Performance: Improved backtest throughput by 35–40% via async caching.",
+            "Versatility: Supports 15+ custom indicators and multi-timeframe simulations.",
+            "Risk Analysis: Calculates Sharpe, max drawdown, and equity curves.",
+            "Data Pipeline: Async loading with Selenium/Chartink integration."
         ],
-        stack: ["python", "pandas", "numpy", "matplotlib", "redis"],
+        stack: ["python", "backtrader", "pandas", "numpy", "selenium", "redis"],
         links: { live: "#", repo: "#" },
         color: "text-vscode-orange border-vscode-orange/50",
         icon: <Database size={24} />
@@ -64,19 +64,19 @@ const projects = [
     },
     {
         id: "p04",
-        name: "pokemongo-event-platform",
+        name: "real-time-location-events",
         version: "v1.0.5",
         status: "GOLIVE",
         type: "SOCIAL",
-        description: "Geo-location event discovery service. Integrated Google OAuth & OpenStreetMap for real-time community raids.",
-        longDescription: "Designed for community coordination, this platform allows players to signal participation in local events. It solves the 'empty lobby' problem by aggregating user intent on a geospatial map. Privacy is handled via fuzzy location broadcasting until a quorum is reached.",
+        description: "Real-time event sharing system with geolocation tracking and async media uploads.",
+        longDescription: "A location-based platform designed for community coordination. It utilizes OpenStreetMap and Leaflet for rendering, with a backend optimized for low-latency updates (sub-300ms) using Firestore real-time listeners and cached POI search.",
         features: [
-            "Geospatial Indexing: Efficient radial search for nearby events.",
-            "WebSockets: Real-time lobby counting and chat coordination.",
-            "OAuth Integration: Trusted identity verification to prevent spam.",
-            "PWA Support: Installable on mobile for field usage."
+            "Low Latency: Map update latency reduced to under 300ms.",
+            "Geolocation: Real-time tracking with OpenStreetMap/Leaflet.",
+            "Security: Google OAuth and secure Node.js APIs.",
+            "Performance: Consistent sub-100ms read/write operations."
         ],
-        stack: ["node.js", "express", "leaflet", "mongodb", "socket.io"],
+        stack: ["react", "node.js", "firebase", "leaflet", "openstreetmap"],
         links: { live: "#", repo: "#" },
         color: "text-vscode-yellow border-vscode-yellow/50",
         icon: <ExternalLink size={24} />
@@ -102,57 +102,93 @@ const projects = [
     }
 ];
 
-const TerminalEntry = ({ project, index, onOpenOverview }) => {
+const ProjectCard = ({ project, index, onOpenOverview }) => {
     return (
         <motion.div
-            initial={{ opacity: 0, x: -10 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
             viewport={{ once: true }}
-            className="group relative border-l-2 border-transparent hover:border-vscode-blue hover:bg-white/[0.02] transition-all duration-300 pl-4 py-4 md:py-6 mb-4"
+            className={`
+                group relative flex flex-col justify-between
+                bg-[#0d1117]/80 backdrop-blur-md border border-white/5 rounded-xl overflow-hidden
+                hover:border-vscode-blue/50 hover:shadow-[0_0_30px_rgba(86,156,214,0.1)]
+                transition-all duration-300 min-h-[320px]
+            `}
         >
-            {/* Project Header Line */}
-            <div className="flex flex-wrap items-center gap-3 mb-3">
-                <span className="text-vscode-blue font-bold text-base md:text-lg break-all sm:break-normal cursor-pointer hover:underline" onClick={() => onOpenOverview(project)}>
-                    {project.name}
-                </span>
-                <span className="text-secondary/40 text-xs font-mono">@{project.version}</span>
-                <span className={`text-[9px] px-2 py-0.5 rounded-full border bg-black/50 backdrop-blur-sm ${project.color ? project.color : "text-vscode-green border-vscode-green/50"} ml-auto md:ml-2 shrink-0`}>
-                    {project.status}
-                </span>
-            </div>
-
-            {/* Description */}
-            <p className="text-secondary/70 text-xs md:text-sm leading-relaxed mb-4 max-w-3xl">
-                {project.description}
-            </p>
-
-            {/* Tech Stack Badges */}
-            <div className="flex flex-wrap gap-2 mb-4">
-                {project.stack.map((tech) => (
-                    <span key={tech} className="px-2 py-1 bg-[#1e1e1e] border border-white/5 rounded text-[10px] text-vscode-orange font-mono">
-                        {tech}
+            {/* Top Bar (Status) */}
+            <div className="px-5 py-3 border-b border-white/5 flex items-center justify-between bg-white/[0.02]">
+                <div className="flex items-center gap-2">
+                    <div className={`p-1.5 rounded-md bg-white/5 ${project.color.split(' ')[0]}`}>
+                        {project.icon}
+                    </div>
+                    <span className="text-xs font-mono text-secondary/60 uppercase tracking-wider">
+                        {project.type}
                     </span>
-                ))}
+                </div>
+                <div className={`flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-mono border ${project.color}`}>
+                    <span className="relative flex h-1.5 w-1.5">
+                        <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${project.color.split(' ')[0].replace('text-', 'bg-')}`}></span>
+                        <span className={`relative inline-flex rounded-full h-1.5 w-1.5 ${project.color.split(' ')[0].replace('text-', 'bg-')}`}></span>
+                    </span>
+                    {project.status}
+                </div>
             </div>
 
-            {/* Action Buttons */}
-            <div className="flex gap-3 mt-2">
+            {/* Main Content */}
+            <div className="p-5 flex-grow flex flex-col relative z-10">
+                <h3 className="text-xl font-bold text-white mb-2 group-hover:text-vscode-blue transition-colors">
+                    {project.name}
+                </h3>
+                <p className="text-secondary/70 text-sm leading-relaxed mb-6 line-clamp-3">
+                    {project.description}
+                </p>
+
+                {/* Tech Stack Preview (Limited) */}
+                <div className="flex flex-wrap gap-2 mt-auto">
+                    {project.stack.slice(0, 3).map((tech) => (
+                        <span key={tech} className="px-2 py-1 bg-[#1e1e1e] border border-white/5 rounded text-[10px] text-secondary font-mono">
+                            {tech}
+                        </span>
+                    ))}
+                    {project.stack.length > 3 && (
+                        <span className="px-2 py-1 bg-[#1e1e1e] border border-white/5 rounded text-[10px] text-secondary font-mono">
+                            +{project.stack.length - 3}
+                        </span>
+                    )}
+                </div>
+            </div>
+
+            {/* Action Footer */}
+            <div className="p-4 border-t border-white/5 bg-white/[0.02] flex items-center justify-between gap-3">
                 <button
                     onClick={() => onOpenOverview(project)}
-                    className="flex items-center gap-1.5 px-3 py-1.5 bg-vscode-blue/10 hover:bg-vscode-blue/20 text-vscode-blue border border-vscode-blue/20 rounded text-xs font-mono transition-colors cursor-pointer group/btn"
+                    className="flex-1 flex items-center justify-center gap-2 py-2 rounded-lg bg-vscode-blue/10 text-vscode-blue text-xs font-medium border border-vscode-blue/20 hover:bg-vscode-blue/20 transition-all"
                 >
-                    open_details
-                    <Maximize2 size={10} className="group-hover/btn:scale-110 transition-transform" />
+                    <Maximize2 size={14} /> View Details
                 </button>
                 <a
                     href={project.links.repo}
-                    className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 hover:bg-white/10 text-secondary border border-white/10 rounded text-xs font-mono transition-colors cursor-pointer group/btn"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-2 rounded-lg bg-white/5 text-secondary hover:text-white hover:bg-white/10 border border-white/10 transition-all"
+                    aria-label="View Source"
                 >
-                    view_source
-                    <ArrowRight size={10} className="group-hover/btn:-rotate-45 transition-transform" />
+                    <Github size={16} />
+                </a>
+                <a
+                    href={project.links.live}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-2 rounded-lg bg-white/5 text-secondary hover:text-white hover:bg-white/10 border border-white/10 transition-all"
+                    aria-label="Live Demo"
+                >
+                    <ExternalLink size={16} />
                 </a>
             </div>
+
+            {/* Hover Gradient */}
+            <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-vscode-blue/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
         </motion.div>
     );
 };
@@ -273,7 +309,10 @@ const Projects = () => {
     const [selectedProject, setSelectedProject] = useState(null);
 
     return (
-        <section id="projects" className="py-32 px-6">
+        <section id="projects" className="py-32 px-6 relative">
+            {/* Background Decoration */}
+            <div className="absolute top-40 right-0 w-[500px] h-[500px] bg-vscode-blue/5 blur-[120px] rounded-full pointer-events-none -z-10" />
+
             <div className="container-width grid grid-cols-1 md:grid-cols-12 gap-12">
                 {/* Header Section */}
                 <div className="md:col-span-4 self-start sticky top-24">
@@ -286,77 +325,49 @@ const Projects = () => {
                             Architectures
                         </span>
                     </h3>
-                    <div className="hidden md:block p-6 bg-gradient-to-br from-white/5 to-transparent border border-white/10 rounded-2xl backdrop-blur-sm">
+
+                    <div className="hidden md:block p-6 bg-[#0d1117]/50 border border-white/10 rounded-2xl backdrop-blur-sm">
                         <div className="flex items-center gap-3 mb-4 text-white">
                             <Command size={20} className="text-vscode-blue" />
-                            <span className="font-mono text-sm font-bold">Quick Actions</span>
+                            <span className="font-mono text-sm font-bold">Mission Control</span>
                         </div>
                         <p className="text-secondary/60 text-xs leading-relaxed mb-4">
-                            Select a project node to view detailed telemetry, architecture diagrams, and source code availability.
+                            A collection of deployed agents, platforms, and engines. Each module represents a solution to a complex problem.
                         </p>
-                        <div className="text-[10px] font-mono text-secondary/40 space-y-1">
-                            <div className="flex justify-between">
-                                <span>TOTAL_MODULES:</span>
-                                <span>{projects.length}</span>
+                        <div className="space-y-3">
+                            <div className="flex items-center gap-2 text-xs text-secondary/70">
+                                <div className="w-1.5 h-1.5 rounded-full bg-vscode-green" />
+                                <span>Agentic AI Systems</span>
                             </div>
-                            <div className="flex justify-between">
-                                <span>STATUS:</span>
-                                <span className="text-vscode-green">ONLINE</span>
+                            <div className="flex items-center gap-2 text-xs text-secondary/70">
+                                <div className="w-1.5 h-1.5 rounded-full bg-vscode-orange" />
+                                <span>Fintech Engines</span>
+                            </div>
+                            <div className="flex items-center gap-2 text-xs text-secondary/70">
+                                <div className="w-1.5 h-1.5 rounded-full bg-vscode-yellow" />
+                                <span>Real-time Platforms</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                {/* Main Terminal Window */}
+                {/* Main Grid Window */}
                 <div className="md:col-span-8">
-                    <div className="bg-[#0d1117]/80 backdrop-blur-xl border border-white/10 rounded-xl overflow-hidden shadow-2xl relative">
-                        {/* Terminal Window Header */}
-                        <div className="flex items-center justify-between px-4 py-3 bg-white/5 border-b border-white/5">
-                            <div className="flex gap-2">
-                                <div className="w-3 h-3 rounded-full bg-[#ff5f56]" />
-                                <div className="w-3 h-3 rounded-full bg-[#ffbd2e]" />
-                                <div className="w-3 h-3 rounded-full bg-[#27c93f]" />
-                            </div>
-                            <div className="flex items-center gap-2 opacity-50 text-xs font-mono">
-                                <Terminal size={12} />
-                                <span>zsh — joshua@portfolio</span>
-                            </div>
-                            <div className="w-10" /> {/* Spacer for balance */}
-                        </div>
+                    {/* "Terminal" Header for Context */}
+                    <div className="mb-6 flex items-center justify-between text-xs font-mono text-secondary/50">
+                        <span>~/projects $ list --view=grid</span>
+                        <span>{projects.length} modules found</span>
+                    </div>
 
-                        {/* CLI Output Stream */}
-                        <div className="p-6 md:p-8 space-y-2">
-                            <div className="text-secondary/50 mb-8 font-mono text-xs">
-                                <span className="text-vscode-green">joshua@portfolio</span>
-                                <span className="text-white">:</span>
-                                <span className="text-vscode-blue">~/projects</span>
-                                <span className="text-white">$ </span>
-                                <span>list --all</span>
-                            </div>
-
-                            <div className="space-y-6">
-                                {projects.map((project, index) => (
-                                    <TerminalEntry
-                                        key={index}
-                                        project={project}
-                                        index={index}
-                                        onOpenOverview={setSelectedProject}
-                                    />
-                                ))}
-                            </div>
-
-                            {/* Prompt at bottom */}
-                            <motion.div
-                                initial={{ opacity: 0 }}
-                                whileInView={{ opacity: 1 }}
-                                transition={{ delay: 0.5 }}
-                                className="flex items-center gap-2 mt-8 pt-4 border-t border-white/5 font-mono text-xs"
-                            >
-                                <span className="text-vscode-green">➜</span>
-                                <span className="text-vscode-blue">~</span>
-                                <span className="w-2.5 h-4 bg-secondary/50 animate-pulse block" />
-                            </motion.div>
-                        </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {projects.map((project, index) => (
+                            <ProjectCard
+                                key={index}
+                                project={project}
+                                index={index}
+                                onOpenOverview={setSelectedProject}
+                            />
+                        ))}
                     </div>
                 </div>
             </div>

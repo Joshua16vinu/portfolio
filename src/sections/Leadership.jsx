@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronRight, FileCode, FileJson, FileCog, X } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const leadershipData = [
     {
@@ -108,6 +108,25 @@ const Tab = ({ item, isActive, onClick }) => (
 
 const Leadership = () => {
     const [activeTab, setActiveTab] = useState(0);
+    const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+
+    const [userHasInteracted, setUserHasInteracted] = useState(false);
+
+    useEffect(() => {
+        let interval;
+        if (isAutoPlaying && !userHasInteracted) {
+            interval = setInterval(() => {
+                setActiveTab((prev) => (prev + 1) % leadershipData.length);
+            }, 200);
+        }
+        return () => clearInterval(interval);
+    }, [isAutoPlaying, userHasInteracted]);
+
+    const handleManualTabChange = (index) => {
+        setActiveTab(index);
+        setUserHasInteracted(true);
+        setIsAutoPlaying(false);
+    };
 
     return (
         <section id="leadership" className="py-24 px-6 relative">
@@ -134,7 +153,11 @@ const Leadership = () => {
 
                     {/* The IDE Workspace */}
                     <div className="lg:col-span-8">
-                        <div className="bg-[#1e1e1e] rounded-xl overflow-hidden border border-[#333] shadow-2xl flex flex-col md:flex-row min-h-[400px]">
+                        <div
+                            className="bg-[#1e1e1e] rounded-xl overflow-hidden border border-[#333] shadow-2xl flex flex-col md:flex-row min-h-[400px]"
+                            onMouseEnter={() => setIsAutoPlaying(false)}
+                            onMouseLeave={() => !userHasInteracted && setIsAutoPlaying(true)}
+                        >
 
                             {/* Sidebar - Explorer (Hidden on mobile) */}
                             <div className="hidden md:flex flex-col w-48 bg-[#252526] border-r border-[#1e1e1e]">
@@ -151,7 +174,7 @@ const Leadership = () => {
                                                 key={item.id}
                                                 item={item}
                                                 isActive={activeTab === index}
-                                                onClick={() => setActiveTab(index)}
+                                                onClick={() => handleManualTabChange(index)}
                                             />
                                         ))}
                                     </div>
@@ -167,7 +190,7 @@ const Leadership = () => {
                                             key={item.id}
                                             item={item}
                                             isActive={activeTab === index}
-                                            onClick={() => setActiveTab(index)}
+                                            onClick={() => handleManualTabChange(index)}
                                         />
                                     ))}
                                 </div>

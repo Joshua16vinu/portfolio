@@ -12,9 +12,9 @@ const gitHistory = [
         hash: "7f3a21b",
         stats: "+2,400 additions",
         details: [
-            "Built AI-powered financial assistant with agentic workflows.",
-            "Integrated Kite/yFinance APIs for real-time tracking.",
-            "Implemented multi-step agents using LangChain."
+            "Designed Backtrader-powered engine with multi-timeframe simulations.",
+            "Architected agentic AI workflows with multi-agent orchestration.",
+            "Implemented long-term memory for autonomous portfolio optimization."
         ]
     },
     {
@@ -27,8 +27,9 @@ const gitHistory = [
         hash: "3b2e91c",
         stats: "+1,200 additions, -400 deletions",
         details: [
-            "Reduced load time by 40% via Node.js microservices.",
-            "Developed REST APIs with RBAC and Caching."
+            "Migrated from CakePHP to Node.js/MySQL microservices.",
+            "Reduced load time by 40% via optimized architecture.",
+            "Implemented RBAC & Caching for reliable portal management."
         ]
     },
     {
