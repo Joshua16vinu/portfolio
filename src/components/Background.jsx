@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 
-const ParticleCanvas = () => {
+const ParticleField = () => {
     const canvasRef = useRef(null);
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
@@ -25,17 +25,16 @@ const ParticleCanvas = () => {
         };
 
         const createParticles = () => {
-            const particleCount = window.innerWidth < 768 ? 30 : 60; // Fewer particles on mobile
+            const count = 50;
             particles = [];
-            for (let i = 0; i < particleCount; i++) {
+            for (let i = 0; i < count; i++) {
                 particles.push({
                     x: Math.random() * canvas.width,
                     y: Math.random() * canvas.height,
-                    size: Math.random() * 2 + 0.5,
-                    speedY: Math.random() * 0.5 + 0.2, // Anti-gravity float
-                    speedX: (Math.random() - 0.5) * 0.2, // Slight drift
-                    opacity: Math.random() * 0.5 + 0.1,
-                    type: Math.random() > 0.8 ? 'square' : 'circle' // Mixed geometry
+                    size: Math.random() * 1.5 + 0.5,
+                    vx: (Math.random() - 0.5) * 0.3,
+                    vy: (Math.random() - 0.5) * 0.3,
+                    opacity: Math.random() * 0.5 + 0.2
                 });
             }
         };
@@ -43,67 +42,35 @@ const ParticleCanvas = () => {
         const draw = () => {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Update and draw particles
             particles.forEach(p => {
-                // Anti-gravity movement (upwards)
-                p.y -= p.speedY;
-                p.x += p.speedX;
+                p.x += p.vx;
+                p.y += p.vy;
 
-                // Mouse interaction (gentle repulsion)
+                // Loop
+                if (p.x < 0) p.x = canvas.width;
+                if (p.x > canvas.width) p.x = 0;
+                if (p.y < 0) p.y = canvas.height;
+                if (p.y > canvas.height) p.y = 0;
+
+                // Mouse influence
                 const dx = p.x - mousePosition.x;
                 const dy = p.y - mousePosition.y;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-                const maxDistance = 200;
-
-                if (distance < maxDistance) {
-                    const force = (maxDistance - distance) / maxDistance;
-                    const repulsionX = dx / distance * force * 1.5;
-                    const repulsionY = dy / distance * force * 1.5;
-                    p.x += repulsionX;
-                    p.y += repulsionY;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 150) {
+                    const angle = Math.atan2(dy, dx);
+                    p.x += Math.cos(angle) * 0.5;
+                    p.y += Math.sin(angle) * 0.5;
                 }
 
-                // Reset positions if out of bounds (looping)
-                if (p.y < -10) {
-                    p.y = canvas.height + 10;
-                    p.x = Math.random() * canvas.width;
-                }
-                if (p.x < -10) p.x = canvas.width + 10;
-                if (p.x > canvas.width + 10) p.x = -10;
-
-                // Draw
-                ctx.fillStyle = `rgba(86, 156, 214, ${p.opacity})`; // VSCode Blue-ish
+                ctx.fillStyle = `rgba(255, 255, 255, ${p.opacity})`;
                 ctx.beginPath();
-                if (p.type === 'square') {
-                    ctx.rect(p.x, p.y, p.size * 2, p.size * 2);
-                } else {
-                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-                }
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
                 ctx.fill();
             });
-
-            // Draw subtle connecting lines for nearby particles (Constellation effect)
-            ctx.strokeStyle = `rgba(86, 156, 214, 0.05)`;
-            ctx.lineWidth = 0.5;
-            for (let i = 0; i < particles.length; i++) {
-                for (let j = i + 1; j < particles.length; j++) {
-                    const dx = particles[i].x - particles[j].x;
-                    const dy = particles[i].y - particles[j].y;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
-
-                    if (dist < 100) {
-                        ctx.beginPath();
-                        ctx.moveTo(particles[i].x, particles[i].y);
-                        ctx.lineTo(particles[j].x, particles[j].y);
-                        ctx.stroke();
-                    }
-                }
-            }
 
             animationFrameId = requestAnimationFrame(draw);
         };
 
-        // Init
         window.addEventListener("resize", resizeCanvas);
         resizeCanvas();
         createParticles();
@@ -113,45 +80,47 @@ const ParticleCanvas = () => {
             window.removeEventListener("resize", resizeCanvas);
             cancelAnimationFrame(animationFrameId);
         };
-    }, [mousePosition]); // Re-run effect isn't strictly necessary for mousePosition if we use a ref for it, but this is simple enough for <100 particles
+    }, [mousePosition]);
 
-    return <canvas ref={canvasRef} className="absolute inset-0 z-0 pointer-events-none" />;
+    return <canvas ref={canvasRef} className="absolute inset-0 z-0 pointer-events-none opacity-40" />;
 };
 
 const Background = () => {
+    const { scrollYProgress } = useScroll();
+    const y1 = useTransform(scrollYProgress, [0, 1], [0, -200]);
+    const y2 = useTransform(scrollYProgress, [0, 1], [0, 200]);
+
     return (
-        <div className="fixed inset-0 z-[-1] bg-[#09090b] overflow-hidden perspective-1000">
-            {/* 1. Deep Space Noise Texture (Static) - Improves perceived quality */}
-            <div className="absolute inset-0 z-0 opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] pointer-events-none mix-blend-overlay" />
+        <div className="fixed inset-0 z-[-1] bg-[#000] overflow-hidden">
+            {/* Base Mesh Gradients */}
+            <motion.div
+                style={{ y: y1 }}
+                className="absolute -top-[20%] -left-[10%] w-[70vw] h-[70vw] rounded-full bg-vscode-blue/10 blur-[120px] mix-blend-screen animate-pulse"
+                transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+            />
+            <motion.div
+                style={{ y: y2 }}
+                className="absolute top-[20%] -right-[10%] w-[60vw] h-[60vw] rounded-full bg-vscode-purple/10 blur-[150px] mix-blend-screen"
+            />
+            <div className="absolute top-[40%] left-[20%] w-[40vw] h-[40vw] rounded-full bg-vscode-teal/5 blur-[100px] animate-pulse" />
 
-            {/* 2. Velocity Grid (The Floor) */}
-            <div className="absolute inset-x-0 bottom-0 h-[60vh] opacity-[0.15] pointer-events-none"
+            {/* Grain Texture */}
+            <div className="absolute inset-0 opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] pointer-events-none" />
+
+            {/* Particle Field */}
+            <ParticleField />
+
+            {/* Subtle Grid */}
+            <div
+                className="absolute inset-0 opacity-[0.05] pointer-events-none"
                 style={{
-                    backgroundImage: `
-                        linear-gradient(rgba(86, 156, 214, 0.2) 1px, transparent 1px),
-                        linear-gradient(90deg, rgba(86, 156, 214, 0.2) 1px, transparent 1px)
-                     `,
-                    backgroundSize: '60px 60px',
-                    transform: 'perspective(500px) rotateX(60deg) translateY(0) scale(2)',
-                    transformOrigin: '50% 100%',
-                    maskImage: 'linear-gradient(to top, black, transparent)'
+                    backgroundImage: `radial-gradient(circle at 2px 2px, rgba(255,255,255,0.15) 1px, transparent 0)`,
+                    backgroundSize: '40px 40px'
                 }}
-            >
-                <motion.div
-                    className="absolute inset-0"
-                    animate={{ translateY: [0, 60] }}
-                    transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                    style={{ backgroundImage: 'inherit', backgroundSize: 'inherit' }}
-                />
-            </div>
+            />
 
-            {/* 3. The Canvas Particle System (Mid-Layer) */}
-            <ParticleCanvas />
-
-            {/* 4. Vignette & Glow (Post-Processing) */}
-            <div className="absolute inset-0 bg-gradient-to-t from-[#09090b] via-transparent to-[#09090b]/50 pointer-events-none" />
-            <div className="absolute -top-[20%] -left-[10%] w-[50vw] h-[50vw] bg-vscode-purple/10 blur-[150px] rounded-full pointer-events-none" />
-            <div className="absolute top-[20%] right-[10%] w-[30vw] h-[30vw] bg-vscode-blue/10 blur-[120px] rounded-full pointer-events-none" />
+            {/* Vignette */}
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black pointer-events-none" />
         </div>
     );
 };

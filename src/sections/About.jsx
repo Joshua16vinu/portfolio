@@ -36,16 +36,16 @@ const About = () => {
                         className="space-y-6 text-lg text-secondary leading-relaxed max-w-3xl font-sans"
                     >
                         <p>
-                            I’m a final-year <span className="text-vscode-teal font-medium">Computer Engineering student</span> who thrives at the intersection of academic excellence and real-world innovation.
-                            From leading technical clubs to mentoring peers and placing as a finalist in multiple hackathons, I’ve always believed in learning by doing.
+                            I’m a final-year <span className="text-vscode-teal font-medium">Computer Engineering student</span> at FCRIT, Mumbai, with a near-perfect CGPA and a passion for engineering high-performance systems.
+                            My work lives at the intersection of <span className="text-vscode-blue font-medium">FinTech</span> and <span className="text-vscode-purple font-medium">Agentic AI</span>.
                         </p>
                         <p>
-                            Currently, I design and build <span className="text-vscode-blue font-medium">AI-powered solutions</span> and <span className="text-vscode-blue font-medium">full-stack web applications</span>,
-                            with a growing focus on <span className="text-vscode-purple font-medium">agentic AI workflows</span> and end-to-end SaaS products.
+                            Currently, as a Project Intern at <span className="text-vscode-orange font-medium">InfinityPool Finnotech</span>, I architect multi-agent AI workflows and quantitative trading engines.
+                            I've also led the end-to-end revamp of my university's digital infrastructure, serving thousands of users.
                         </p>
                         <p>
-                            Passionate about community, collaboration, and innovation, I love turning ideas into impactful solutions.
-                            So if you’re into <span className="text-vscode-orange font-mono">"AI"</span>, <span className="text-vscode-orange font-mono">"coding"</span>, or just exploring what’s possible with tech, let’s start a conversation!
+                            Beyond coding, I head the AI & Deep Learning Club at my college and speak at workshops to mentor the next generation of developers.
+                            I'm always looking for ways to turn complex problems into scalable, production-ready solutions.
                         </p>
                     </motion.div>
 

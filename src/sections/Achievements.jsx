@@ -72,6 +72,21 @@ const achievements = [
     },
     {
         id: "05",
+        name: "Cryptex 2023",
+        publisher: "Web Dev Contest",
+        icon: <Star className="text-vscode-yellow" size={24} />,
+        year: "2023",
+        rank: "1ST PRIZE",
+        description: "Winner of the Web Development competition at Cryptex 2023.",
+        details: "Developed a responsive and feature-rich web application under time constraints.",
+        stars: 5,
+        category: "WEB_DEV",
+        images: [],
+        color: "group-hover:shadow-vscode-yellow/20 group-hover:border-vscode-yellow/30",
+        accent: "text-vscode-yellow"
+    },
+    {
+        id: "06",
         name: "Fraud Research",
         publisher: "ICNTE Conf.",
         icon: <BookOpen className="text-vscode-green" size={24} />,

@@ -5,45 +5,45 @@ const gitHistory = [
     {
         id: "c0mm1t_4",
         type: "work",
-        branch: "feature/internship",
-        message: "Joined Infinity Pool Finnotech as Project Intern",
-        author: "Infinity Pool Finnotech",
+        branch: "feature/agentic-ai",
+        message: "Project Intern @ InfinityPool Finnotech",
+        author: "InfinityPool",
         date: "July 2024 - Present",
         hash: "7f3a21b",
         stats: "+2,400 additions",
         details: [
-            "Designed Backtrader-powered engine with multi-timeframe simulations.",
-            "Architected agentic AI workflows with multi-agent orchestration.",
-            "Implemented long-term memory for autonomous portfolio optimization."
+            "Designed a Backtrader-powered trading engine with 40+ technical indicators.",
+            "Architected agentic AI workflows with multi-agent orchestration and long-term memory.",
+            "Built custom web crawlers for news sentiment analysis and market signals."
         ]
     },
     {
         id: "c0mm1t_3",
         type: "work",
-        branch: "fix/web-performance",
-        message: "Revamped FCRIT Website Backend",
+        branch: "feature/full-stack",
+        message: "Full Stack Developer Intern @ FCRIT",
         author: "FCRIT",
         date: "Jan 2025 - June 2025",
         hash: "3b2e91c",
-        stats: "+1,200 additions, -400 deletions",
+        stats: "+1,200 additions",
         details: [
-            "Migrated from CakePHP to Node.js/MySQL microservices.",
-            "Reduced load time by 40% via optimized architecture.",
-            "Implemented RBAC & Caching for reliable portal management."
+            "Led the revamp of fcrit.ac.in using React.js and modern UI principles.",
+            "Implemented secure REST APIs with JWT authentication and RBAC.",
+            "Developed a real-time event sharing system with geolocation tracking."
         ]
     },
     {
         id: "c0mm1t_2",
         type: "education",
         branch: "chore/education",
-        message: "Completed Third Year Engineering",
+        message: "BE in Computer Engineering",
         author: "FCRIT, Mumbai",
         date: "2022 - 2026",
         hash: "1a8d4e2",
         stats: "CGPA: 9.69",
         details: [
-            "Major: Computer Engineering",
-            "Achievement: First Rank in Department"
+            "Perfect 10.0/10 GPA in Third Year Engineering.",
+            "First Rank in the Department (2022-2026)."
         ]
     }
 ];

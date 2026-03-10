@@ -116,12 +116,12 @@ const Hero = () => {
                         </h2>
                     </div>
 
-                    <p className="text-base text-secondary max-w-lg leading-relaxed">
+                    {/* <p className="text-base text-secondary max-w-lg leading-relaxed">
                         Project Intern @Infinity Pool Finnotech | CSE @FCRIT 2026
-                    </p>
+                    </p> */}
 
                     <div className="flex flex-wrap items-center gap-3 pt-4">
-                        <MagneticSocialButton href="/resume.pdf" ariaLabel="Resume" className="px-5 py-2.5 md:px-6 md:py-3 rounded-full">
+                        <MagneticSocialButton href="public/resume.pdf" ariaLabel="Resume" className="px-5 py-2.5 md:px-6 md:py-3 rounded-full">
                             <FileText size={18} className="md:w-5 md:h-5" />
                             <span className="font-medium text-sm md:text-base">Resume</span>
                         </MagneticSocialButton>

@@ -7,98 +7,79 @@ import { Terminal, ArrowRight, ExternalLink, Github, ChevronRight, Folder, Code,
 const projects = [
     {
         id: "p01",
-        name: "financial-assistant-agent",
-        version: "v2.4.0",
-        status: "DEPLOYED",
-        type: "AI_AGENT",
-        description: "Autonomous AI agent designed for high-frequency portfolio management and market analysis. Utilizes separate memory streams for macro-economic data and technical indicators.",
-        longDescription: "This system represents a shift towards autonomous financial decision-making. By leveraging a multi-agent architecture, the system separates concerns between data acquisition, sentiment analysis (news/social), and technical chart pattern recognition. The core agent synthesizes these inputs using a custom-tuned LLM to output probability-weighted trade signals.",
-        features: [
-            "Multi-Agent Orchestration: dedicated sub-agents for news, charts, and risk.",
-            "RAG Pipeline: Contextualizes current market conditions with historical analogies.",
-            "Self-Correction: Post-trade analysis loop to refine strategy weights.",
-            "Latency: Sub-500ms decision pipeline for real-time market adaptation."
-        ],
-        stack: ["python", "langchain", "openai", "pinecone", "fastapi", "docker"],
-        links: { live: "#", repo: "#" },
-        color: "text-vscode-green border-vscode-green/50",
-        icon: <Cpu size={24} />
-    },
-    {
-        id: "p02",
         name: "signal-agnostic-backtesting",
-        version: "v1.1.2",
+        version: "v1.5.0",
         status: "STABLE",
         type: "FINTECH",
-        description: "Backtrader-powered engine accommodating multiple trading strategies with 15+ custom indicators.",
-        longDescription: "Engineered a robust backtesting framework that accommodates multiple trading strategies through optimized event-driven execution. It features optimized data loaders with chunked OHLCV ingestion and memory-mapped datasets, eliminating look-ahead bias.",
+        description: "Backtrader-powered engine accommodating multiple trading strategies with 15+ custom indicators and chunked OHLCV ingestion.",
+        longDescription: "Engineered a robust backtesting framework that supports 15+ custom indicators with optimized data loaders. It eliminates look-ahead bias and allows for multi-timeframe simulations with high-performance throughput.",
         features: [
-            "Performance: Improved backtest throughput by 35–40% via async caching.",
-            "Versatility: Supports 15+ custom indicators and multi-timeframe simulations.",
-            "Risk Analysis: Calculates Sharpe, max drawdown, and equity curves.",
-            "Data Pipeline: Async loading with Selenium/Chartink integration."
+            "Support for 15+ custom indicators and multiple trading strategies.",
+            "Optimized data loaders with chunked OHLCV ingestion.",
+            "Memory-mapped datasets to handle large-scale historical data.",
+            "Visualized equity curves and performance metrics (Sharpe, Drawdown)."
         ],
-        stack: ["python", "backtrader", "pandas", "numpy", "selenium", "redis"],
+        stack: ["Python", "Backtrader", "Pandas", "NumPy", "Selenium", "Redis"],
         links: { live: "#", repo: "#" },
         color: "text-vscode-orange border-vscode-orange/50",
         icon: <Database size={24} />
     },
     {
-        id: "p03",
-        name: "ai-personalized-learning",
-        version: "v3.0.0-beta",
-        status: "ACTIVE",
-        type: "EDUTECH",
-        description: "Adaptive tutoring system using Gemini API to create unique learning paths. Visualizes concept retention with dynamic knowledge graphs.",
-        longDescription: "Moving beyond static video courses, this platform uses Generative AI to act as a 1:1 Socratic tutor. It assesses user gaps in real-time and generates custom quizzes, explanations, and analogies tailored to the user's background. The frontend features a dynamic 'Skill Tree' that grows as the user masters concepts.",
+        id: "p02",
+        name: "real-time-event-platform",
+        version: "v1.2.0",
+        status: "LIVE",
+        type: "SOCIAL_TECH",
+        description: "Location-based event platform featuring real-time tracking, sub-100ms operations, and social sharing.",
+        longDescription: "A real-time platform designed for location-based event discovery and sharing. It features sub-100ms read/write operations and utilizes Firestore real-time listeners for seamless map updates across users.",
         features: [
-            "Knowledge Tracing: Bayesian modeling of student mastery levels.",
-            "Generative Content: On-the-fly creation of quizzes and examples.",
-            "Real-time Feedback: Instant code analysis and debugging assistance.",
-            "Voice Mode: Conversational practice for language or oral exams."
+            "Geolocation tracking with OpenStreetMap and Leaflet.",
+            "Real-time Firestore listeners for instant event updates.",
+            "Sub-100ms latency for database operations.",
+            "Google OAuth integration for secure user sessions."
         ],
-        stack: ["react", "firebase", "gemini-1.5-pro", "flask", "d3.js"],
+        stack: ["React.js", "Node.js", "Firebase", "OpenStreetMap", "Leaflet"],
         links: { live: "#", repo: "#" },
         color: "text-vscode-blue border-vscode-blue/50",
         icon: <Globe size={24} />
     },
     {
-        id: "p04",
-        name: "real-time-location-events",
-        version: "v1.0.5",
-        status: "GOLIVE",
-        type: "SOCIAL",
-        description: "Real-time event sharing system with geolocation tracking and async media uploads.",
-        longDescription: "A location-based platform designed for community coordination. It utilizes OpenStreetMap and Leaflet for rendering, with a backend optimized for low-latency updates (sub-300ms) using Firestore real-time listeners and cached POI search.",
+        id: "p03",
+        name: "agentic-ai-orchestrator",
+        version: "v2.0.0",
+        status: "STRICT",
+        type: "AI_INFRA",
+        description: "Multi-agent AI ecosystem with long-term memory and autonomous task execution for financial analysis.",
+        longDescription: "Architected as a collection of specialized agents that collaborate on complex tasks. Features a long-term memory module that allows agents to learn from past market interactions and refine their strategy over time.",
         features: [
-            "Low Latency: Map update latency reduced to under 300ms.",
-            "Geolocation: Real-time tracking with OpenStreetMap/Leaflet.",
-            "Security: Google OAuth and secure Node.js APIs.",
-            "Performance: Consistent sub-100ms read/write operations."
+            "Multi-agent orchestration for parallel data processing.",
+            "Long-term memory stream using Vector DBs (FAISS/Chroma).",
+            "Autonomous news sentiment analysis sub-pipeline.",
+            "Seamless integration with GenAI (Gemini) for reasoning."
         ],
-        stack: ["react", "node.js", "firebase", "leaflet", "openstreetmap"],
+        stack: ["Python", "LangChain", "Gemini", "FastAPI", "VectorDBs"],
+        links: { live: "#", repo: "#" },
+        color: "text-vscode-green border-vscode-green/50",
+        icon: <Cpu size={24} />
+    },
+    {
+        id: "p04",
+        name: "academic-portal-revamp",
+        version: "v4.0.0",
+        status: "PRODUCTION",
+        type: "FULL_STACK",
+        description: "Enterprise-grade university portal overhaul serving 1500+ users with secure JWT auth and RBAC.",
+        longDescription: "Led the end-to-end migration and redesign of a major university portal. Focused on security, performance, and accessibility, achieving a 40% reduction in average load times.",
+        features: [
+            "Modern React.js frontend with Tailwind CSS.",
+            "Secure REST APIs with JWT authentication.",
+            "Role-Based Access Control (RBAC) for administration.",
+            "Optimized MySQL schema for complex relational data."
+        ],
+        stack: ["React.js", "Node.js", "MySQL", "Express", "Tailwind"],
         links: { live: "#", repo: "#" },
         color: "text-vscode-yellow border-vscode-yellow/50",
         icon: <ExternalLink size={24} />
-    },
-    {
-        id: "p05",
-        name: "secretsync-e2ee-chat",
-        version: "v1.0.0",
-        status: "SECURE",
-        type: "SECURITY",
-        description: "Zero-knowledge messaging platform. Implements Diffie-Hellman key exchange, AES-256 encryption, and ephemeral messaging.",
-        longDescription: "A security-first messaging application where the server knows nothing. All encryption happens client-side. It implements the Double Ratchet algorithm to ensure future secrecy even if a key is compromised. Messages are stored only in volatile memory.",
-        features: [
-            "E2E Encryption: AES-256-GCM for payload protection.",
-            "Double Ratchet: Forward secrecy for every single message.",
-            "Ephemeral Keys: Identity keys rotate automatically.",
-            "Steganography: Optional hiding of encrypted blobs in image data."
-        ],
-        stack: ["typescript", "react", "webcrypto-api", "signal-protocol"],
-        links: { live: "#", repo: "#" },
-        color: "text-vscode-purple border-vscode-purple/50",
-        icon: <Code size={24} />
     }
 ];
 
