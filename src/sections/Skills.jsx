@@ -3,9 +3,9 @@ import FloatingElement from "../components/FloatingElement";
 
 const skillCategories = [
     { name: "Programming Languages", skills: ["Python", "JavaScript (ES6+)", "TypeScript", "Java", "C/C++", "SQL"] },
-    { name: "AI/ML Frameworks", skills: ["TensorFlow", "Keras", "Generative AI", "LangChain", "RAG Pipelines", "scikit-learn", "Vector DBs (FAISS, Chroma)"] },
+    { name: "AI/ML Frameworks", skills: ["TensorFlow", "Keras", "Generative AI", "LangChain", "RAG Pipelines", "scikit-learn", "Vector DBs"] },
     { name: "Full Stack Development", skills: ["React.js", "Next.js", "Node.js", "FastAPI", "PostgreSQL", "MongoDB", "Firebase", "Supabase", "REST APIs"] },
-    { name: "Cloud & Tools", skills: ["Git/GitHub", "Docker", "AWS", "CI/CD (GitHub Actions)", "Vertex AI", "Netlify", "Vercel"] }
+    { name: "Cloud & Tools", skills: ["Git/GitHub", "Docker", "AWS", "CI/CD", "Vertex AI", "Netlify", "Vercel"] }
 ];
 
 const Skills = () => {
