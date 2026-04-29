@@ -41,6 +41,21 @@ const achievements = [
         accent: "text-vscode-purple"
     },
     {
+        id: "02b",
+        name: "Hack IITK 2026",
+        publisher: "C3iHub, IIT Kanpur",
+        icon: <ShieldCheck className="text-vscode-purple" size={24} />,
+        year: "2026",
+        rank: "3RD PLACE",
+        description: "3rd place in Cybersecurity hackathon among 9000+ participants.",
+        details: "Developed a fully offline policy gap analysis system using local LLMs.",
+        stars: 5,
+        category: "SECURITY",
+        images: [],
+        color: "group-hover:shadow-vscode-purple/20 group-hover:border-vscode-purple/30",
+        accent: "text-vscode-purple"
+    },
+    {
         id: "03",
         name: "CodeMania Contest",
         publisher: "CSI India",

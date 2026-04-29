@@ -58,6 +58,24 @@ const leadershipData = [
         "Colab_Notebooks"
     ]
 }`
+    },
+    {
+        id: "sttp_speaker.json",
+        role: "Guest_Speaker",
+        org: "Dept_of_IT",
+        icon: <FileJson size={14} className="text-green-400" />,
+        fileType: "json",
+        context: "AI/ML Sessions",
+        code: `{
+    "event": "Short_Term_Training_Program",
+    "topic": "AI/ML",
+    "audience_size": 100,
+    "feedback": "Highly Positive",
+    "materials": [
+        "Presentations.pdf",
+        "Hands_on_Sessions"
+    ]
+}`
     }
 ];
 

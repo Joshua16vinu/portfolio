@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Terminal, ArrowRight, ExternalLink, Github, ChevronRight, Folder, Code, Cpu, Database, Globe, X, Scan, ChevronLeft, Maximize2, Command } from "lucide-react";
+import { Terminal, ArrowRight, ExternalLink, Github, ChevronRight, Folder, Code, Cpu, Database, Globe, X, Scan, ChevronLeft, Maximize2, Command, ShieldCheck } from "lucide-react";
 
 // Placeholder images logic can be added later, for now we rely on the clean "No Media" UI
 const projects = [
@@ -80,6 +80,25 @@ const projects = [
         links: { live: "#", repo: "#" },
         color: "text-vscode-yellow border-vscode-yellow/50",
         icon: <ExternalLink size={24} />
+    },
+    {
+        id: "p05",
+        name: "local-llm-policy-gap",
+        version: "v1.0.0",
+        status: "COMPLETED",
+        type: "AI_SECURITY",
+        description: "Offline policy gap analysis system using local LLMs (Phi & Mistral) via Ollama.",
+        longDescription: "Developed a fully offline policy gap analysis system using local LLMs (Phi & Mistral) deployed via Ollama, adhering to zero API and no-cloud constraints. Built a RAG-based pipeline to analyze organizational policies against NIST cybersecurity framework templates, identifying policy gaps by leveraging vector embeddings & semantic search.",
+        features: [
+            "Fully offline execution using local LLMs (Phi & Mistral) via Ollama.",
+            "RAG-based pipeline for NIST cybersecurity framework alignment.",
+            "Auto, Deep, and Express modes for balancing accuracy and latency.",
+            "Vector embeddings and semantic search for policy gap identification."
+        ],
+        stack: ["Python", "Mistral", "Phi", "Ollama", "NLP", "ChromaDB"],
+        links: { live: "#", repo: "#" },
+        color: "text-vscode-purple border-vscode-purple/50",
+        icon: <ShieldCheck size={24} />
     }
 ];
 

@@ -8,7 +8,7 @@ const gitHistory = [
         branch: "feature/agentic-ai",
         message: "Project Intern @ InfinityPool Finnotech",
         author: "InfinityPool",
-        date: "July 2024 - Present",
+        date: "July 2024 - April 2026",
         hash: "7f3a21b",
         stats: "+2,400 additions",
         details: [
@@ -40,7 +40,7 @@ const gitHistory = [
         author: "FCRIT, Mumbai",
         date: "2022 - 2026",
         hash: "1a8d4e2",
-        stats: "CGPA: 9.69",
+        stats: "CGPA: 9.74",
         details: [
             "Perfect 10.0/10 GPA in Third Year Engineering.",
             "First Rank in the Department (2022-2026)."
