@@ -1,245 +1,196 @@
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronRight, FileCode, FileJson, FileCog, X } from "lucide-react";
-import { useState, useEffect } from "react";
+import { ChevronLeft, ChevronRight, Users, Mic, Presentation, ShieldCheck } from "lucide-react";
 
 const leadershipData = [
     {
-        id: "chairperson.tsx",
+        id: "chairperson",
         role: "Chairperson",
         org: "AIDL Club",
-        icon: <FileCode size={14} className="text-blue-400" />,
-        fileType: "react",
-        context: "Leading 150+ members",
-        code: `const Chairperson = {
-    organization: "AIDL Club",
-    scale: "150+ Members",
-    highlight: "WebRush'24 Hackathon",
-    impact: [
-        "Orchestrated National Event",
-        "Mentored 500+ Students",
-        "Curated Tech Curriculum"
-    ],
-    status: "ACTIVE"
-};`
+        icon: <Users size={22} className="text-vscode-blue" />,
+        date: "2023 - 2024",
+        description: "Led a community of 150+ members. Orchestrated the national level WebRush'24 Hackathon, mentored over 500 students, and curated the technical curriculum.",
+        highlights: ["150+ Members", "WebRush'24 Hackathon", "Mentored 500+"],
+        images: [
+            // Example placeholder images - replace with actual paths (e.g. "/images/aidl-1.jpg")
+            "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=2070&auto=format&fit=crop", 
+            "https://images.unsplash.com/photo-1515169065258-16e534f3c7b2?q=80&w=2070&auto=format&fit=crop"
+        ]
     },
     {
-        id: "tech_coord.config",
-        role: "Tech_Coordinator",
+        id: "tech_coord",
+        role: "Tech Coordinator",
         org: "FCRIT",
-        icon: <FileCog size={14} className="text-yellow-400" />,
-        fileType: "config",
-        context: "Digital presence manager",
-        code: `module.exports = {
-    role: "Tech_Coordinator",
-    focus: ["ML", "Deep Learning"],
-    deliverables: {
-        workshops: "Hands-on Training",
-        digital: "Social Presence Growth"
-    },
-    execute: function() {
-        return "Knowledge Transfer";
-    }
-};`
+        icon: <ShieldCheck size={22} className="text-vscode-teal" />,
+        date: "2023 - 2024",
+        description: "Managed the digital presence and social growth. Conducted hands-on training workshops focusing on Machine Learning and Deep Learning.",
+        highlights: ["ML Training", "Digital Growth", "Workshops"],
+        images: [
+            "https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=2070&auto=format&fit=crop"
+        ]
     },
     {
-        id: "speaker_log.json",
-        role: "Guest_Speaker",
+        id: "guest_speaker_1",
+        role: "Guest Speaker",
         org: "Cryptex'24",
-        icon: <FileJson size={14} className="text-purple-400" />,
-        fileType: "json",
-        context: "AI concepts trainer",
-        code: `{
-    "event": "Cryptex_2024",
-    "topic": "Foundational ML",
-    "audience_size": 30,
-    "feedback": "4.8/5.0",
-    "materials": [
-        "Slides.pdf",
-        "Colab_Notebooks"
-    ]
-}`
+        icon: <Mic size={22} className="text-vscode-purple" />,
+        date: "2024",
+        description: "Delivered a dedicated session on Foundational ML to 30 attendees. Shared detailed Colab notebooks and presentations, receiving a 4.8/5.0 feedback.",
+        highlights: ["Foundational ML", "30 Attendees", "4.8/5.0 Rating"],
+        images: [
+            "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?q=80&w=2070&auto=format&fit=crop"
+        ]
     },
     {
-        id: "sttp_speaker.json",
-        role: "Guest_Speaker",
-        org: "Dept_of_IT",
-        icon: <FileJson size={14} className="text-green-400" />,
-        fileType: "json",
-        context: "AI/ML Sessions",
-        code: `{
-    "event": "Short_Term_Training_Program",
-    "topic": "AI/ML",
-    "audience_size": 100,
-    "feedback": "Highly Positive",
-    "materials": [
-        "Presentations.pdf",
-        "Hands_on_Sessions"
-    ]
-}`
+        id: "guest_speaker_2",
+        role: "Guest Speaker",
+        org: "Dept of IT",
+        icon: <Presentation size={22} className="text-vscode-orange" />,
+        date: "2023",
+        description: "Conducted a Short Term Training Program focused on practical AI/ML applications for an audience of 100+ participants. Feedback was highly positive.",
+        highlights: ["AI/ML STTP", "100+ Participants", "Hands-on"],
+        images: [] // Leave empty if no images available
     }
 ];
 
-const SyntaxHighlighter = ({ code }) => {
-    // Simple regex-based highlighting for a cleaner look
-    const lines = code.split('\n');
+const ImageCarousel = ({ images }) => {
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    if (!images || images.length === 0) return null;
+
+    const nextImage = () => setCurrentIndex((prev) => (prev + 1) % images.length);
+    const prevImage = () => setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+
     return (
-        <div className="font-mono text-xs md:text-sm leading-6">
-            {lines.map((line, i) => (
-                <div key={i} className="table-row">
-                    <span className="table-cell text-right pr-4 text-gray-600 select-none w-8 text-[10px] md:text-xs pt-[2px]">{i + 1}</span>
-                    <span className="table-cell whitespace-pre-wrap text-gray-300">
-                        {line.split(/(":?[\w\s\d.'-]+"?)|(\/\/.*)/g).map((token, j) => {
-                            if (!token) return null;
-                            if (token.startsWith('"')) return <span key={j} className="text-[#ce9178]">{token}</span>; // Strings
-                            if (token.match(/\b(const|let|var|function|return|module|exports)\b/)) return <span key={j} className="text-[#569cd6]">{token}</span>; // Keywords
-                            if (token.endsWith(':')) return <span key={j} className="text-[#9cdcfe]">{token}</span>; // Keys
-                            if (token.match(/[{}\[\],;]/)) return <span key={j} className="text-[#ffd700]">{token}</span>; // Punctuation
-                            return token;
-                        })}
-                    </span>
-                </div>
-            ))}
+        <div className="relative w-full h-48 sm:h-56 overflow-hidden group bg-surfaceLight border-b border-border/50">
+            <AnimatePresence mode="wait">
+                <motion.img
+                    key={currentIndex}
+                    src={images[currentIndex]}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="w-full h-full object-cover"
+                    alt="leadership event"
+                />
+            </AnimatePresence>
+            
+            {/* Overlay Gradient for readability if needed */}
+            <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-transparent to-transparent opacity-80" />
+
+            {images.length > 1 && (
+                <>
+                    <button 
+                        onClick={prevImage}
+                        className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/50 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-vscode-blue"
+                    >
+                        <ChevronLeft size={18} />
+                    </button>
+                    <button 
+                        onClick={nextImage}
+                        className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/50 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-vscode-blue"
+                    >
+                        <ChevronRight size={18} />
+                    </button>
+                    
+                    {/* Dots */}
+                    <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
+                        {images.map((_, idx) => (
+                            <div 
+                                key={idx} 
+                                className={`w-1.5 h-1.5 rounded-full transition-colors ${idx === currentIndex ? 'bg-vscode-blue w-3' : 'bg-white/50'}`}
+                            />
+                        ))}
+                    </div>
+                </>
+            )}
         </div>
     );
 };
 
-const SidebarItem = ({ item, isActive, onClick }) => (
-    <button
-        onClick={onClick}
-        className={`w-full flex items-center gap-2 px-3 py-1.5 text-xs transition-colors ${isActive ? "bg-[#37373d] text-white" : "text-secondary/70 hover:bg-[#2a2d2e] hover:text-white"}`}
-    >
-        {item.icon}
-        <span className="truncate">{item.id}</span>
-    </button>
-);
-
-const Tab = ({ item, isActive, onClick }) => (
-    <button
-        onClick={onClick}
-        className={`flex items-center gap-2 px-4 py-2 text-xs border-r border-[#1e1e1e] min-w-[120px] transition-colors cursor-pointer ${isActive ? "bg-[#1e1e1e] text-white border-t-2 border-t-vscode-blue" : "bg-[#2d2d2d] text-secondary/60 hover:bg-[#2a2d2e]"}`}
-    >
-        {item.icon}
-        <span className="truncate">{item.id}</span>
-        {isActive && <X size={12} className="ml-auto opacity-50 hover:text-white" />}
-    </button>
-);
-
-const Leadership = () => {
-    const [activeTab, setActiveTab] = useState(0);
-    const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-
-    const [userHasInteracted, setUserHasInteracted] = useState(false);
-
-    useEffect(() => {
-        let interval;
-        if (isAutoPlaying && !userHasInteracted) {
-            interval = setInterval(() => {
-                setActiveTab((prev) => (prev + 1) % leadershipData.length);
-            }, 200);
-        }
-        return () => clearInterval(interval);
-    }, [isAutoPlaying, userHasInteracted]);
-
-    const handleManualTabChange = (index) => {
-        setActiveTab(index);
-        setUserHasInteracted(true);
-        setIsAutoPlaying(false);
-    };
-
+const LeadershipCard = ({ item, index }) => {
     return (
-        <section id="leadership" className="py-24 px-6 relative">
-            <div className="absolute top-1/4 left-0 w-[500px] h-[500px] bg-vscode-blue/5 blur-[120px] rounded-full pointer-events-none -z-10" />
-
-            <div className="container-width">
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-
-                    {/* Header / Context */}
-                    <div className="lg:col-span-4 sticky top-32">
-                        <h2 className="text-sm font-mono text-secondary uppercase tracking-widest mb-4">
-                            06 // Leadership
-                        </h2>
-                        <h3 className="text-3xl md:text-4xl font-bold text-white mb-6">
-                            Verified <br />
-                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-vscode-blue to-vscode-teal">
-                                Contributions
-                            </span>
-                        </h3>
-                        <p className="text-secondary/70 leading-relaxed text-sm">
-                            I believe in open knowledge sharing. Here's a log of my initiatives in managing tech communities and mentoring student developers.
-                        </p>
-                    </div>
-
-                    {/* The IDE Workspace */}
-                    <div className="lg:col-span-8">
-                        <div
-                            className="bg-[#1e1e1e] rounded-xl overflow-hidden border border-[#333] shadow-2xl flex flex-col md:flex-row min-h-[400px]"
-                            onMouseEnter={() => setIsAutoPlaying(false)}
-                            onMouseLeave={() => !userHasInteracted && setIsAutoPlaying(true)}
-                        >
-
-                            {/* Sidebar - Explorer (Hidden on mobile) */}
-                            <div className="hidden md:flex flex-col w-48 bg-[#252526] border-r border-[#1e1e1e]">
-                                <div className="px-4 py-3 text-xs font-bold text-secondary/50 uppercase tracking-wider flex items-center justify-between">
-                                    Explorer <span className="text-[10px]">...</span>
-                                </div>
-                                <div className="flex flex-col">
-                                    <div className="px-2 py-1 text-secondary/70 flex items-center gap-1 text-xs font-bold">
-                                        <ChevronRight size={12} className="rotate-90" /> POR_2024
-                                    </div>
-                                    <div className="pl-2">
-                                        {leadershipData.map((item, index) => (
-                                            <SidebarItem
-                                                key={item.id}
-                                                item={item}
-                                                isActive={activeTab === index}
-                                                onClick={() => handleManualTabChange(index)}
-                                            />
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Main Editor Area */}
-                            <div className="flex-1 flex flex-col min-w-0">
-                                {/* Tabs */}
-                                <div className="flex overflow-x-auto scrollbar-hide bg-[#252526]">
-                                    {leadershipData.map((item, index) => (
-                                        <Tab
-                                            key={item.id}
-                                            item={item}
-                                            isActive={activeTab === index}
-                                            onClick={() => handleManualTabChange(index)}
-                                        />
-                                    ))}
-                                </div>
-
-                                {/* Breadcrumbs */}
-                                <div className="px-4 py-2 border-b border-[#333] flex items-center gap-2 text-xs text-secondary/50 font-mono">
-                                    <span>src</span>
-                                    <ChevronRight size={10} />
-                                    <span>leadership</span>
-                                    <ChevronRight size={10} />
-                                    <span className="text-white">{leadershipData[activeTab].role}</span>
-                                </div>
-
-                                {/* Code Area */}
-                                <div className="flex-1 p-6 relative overflow-auto scrollbar-hide bg-[#1e1e1e]">
-                                    <AnimatePresence mode="wait">
-                                        <motion.div
-                                            key={activeTab}
-                                            initial={{ opacity: 0, y: 10 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            exit={{ opacity: 0, y: -10 }}
-                                            transition={{ duration: 0.2 }}
-                                        >
-                                            <SyntaxHighlighter code={leadershipData[activeTab].code} />
-                                        </motion.div>
-                                    </AnimatePresence>
-                                </div>
-                            </div>
-
+        <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: index * 0.1 }}
+            viewport={{ once: true, margin: "-50px" }}
+            className="flex flex-col bg-surface/30 backdrop-blur-sm border border-border/60 hover:border-vscode-blue/30 rounded-2xl overflow-hidden hover:shadow-[0_0_20px_rgba(86,156,214,0.1)] hover:-translate-y-1 transition-all duration-300"
+        >
+            <ImageCarousel images={item.images} />
+            
+            <div className={`p-6 md:p-8 flex-1 flex flex-col ${(!item.images || item.images.length === 0) ? 'pt-8' : ''}`}>
+                <div className="flex justify-between items-start mb-4">
+                    <div>
+                        <h3 className="text-xl font-bold text-primary mb-1">{item.role}</h3>
+                        <div className="flex items-center gap-2">
+                            <p className="text-vscode-blue text-sm font-mono">{item.org}</p>
+                            <span className="w-1 h-1 rounded-full bg-border"></span>
+                            <span className="text-secondary/60 text-xs font-mono">{item.date}</span>
                         </div>
                     </div>
+                    <div className="p-2 bg-surfaceLight border border-border/50 rounded-lg">
+                        {item.icon}
+                    </div>
+                </div>
+                
+                <p className="text-secondary/80 text-sm leading-relaxed flex-1 mb-6">
+                    {item.description}
+                </p>
+
+                <div className="flex flex-wrap gap-2 mt-auto pt-4 border-t border-border/50">
+                    {item.highlights.map((highlight, i) => (
+                        <span key={i} className="px-2.5 py-1 text-[11px] font-mono rounded-md bg-surfaceLight border border-border/50 text-secondary hover:text-primary transition-colors">
+                            {highlight}
+                        </span>
+                    ))}
+                </div>
+            </div>
+        </motion.div>
+    );
+};
+
+const Leadership = () => {
+    return (
+        <section id="leadership" className="py-32 px-6 relative overflow-hidden">
+            <div className="absolute top-1/4 left-0 w-[500px] h-[500px] bg-vscode-blue/5 blur-[120px] rounded-full pointer-events-none -z-10" />
+            <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-vscode-purple/5 blur-[120px] rounded-full pointer-events-none -z-10" />
+
+            <div className="max-w-6xl mx-auto">
+                <div className="flex flex-col items-center mb-16 text-center">
+                    <motion.h2 
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="text-sm font-mono text-vscode-blue uppercase tracking-widest mb-4"
+                    >
+                        06 // Leadership
+                    </motion.h2>
+                    <motion.h3 
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.1 }}
+                        className="text-3xl md:text-5xl font-bold text-primary mb-6"
+                    >
+                        Community & Speaking
+                    </motion.h3>
+                    <motion.p 
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.2 }}
+                        className="text-secondary max-w-2xl text-lg"
+                    >
+                        Initiatives in managing tech communities, speaking at events, and mentoring student developers.
+                    </motion.p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    {leadershipData.map((item, index) => (
+                        <LeadershipCard key={item.id} item={item} index={index} />
+                    ))}
                 </div>
             </div>
         </section>
