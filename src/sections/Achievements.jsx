@@ -1,336 +1,329 @@
-import { useState } from "react";
-import { createPortal } from "react-dom";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Award, Trophy, BookOpen, ShieldCheck, Fingerprint, X, ExternalLink, Star, ArrowUpRight, Hash, ScanLine, Activity, ChevronLeft, ChevronRight } from "lucide-react";
+import { Award, Trophy, BookOpen, ShieldCheck, Fingerprint, Star, ChevronLeft, ChevronRight } from "lucide-react";
 
-import infinity1 from "../assets/achievements/infinity_pool_1.png";
-import infinity2 from "../assets/achievements/infinity_pool_2.png";
 import academicImg from "../assets/achievements/academic_rank.png";
 import hacktivateImg from "../assets/achievements/hacktivate_runner_up.png";
 import pubImg from "../assets/achievements/publication.png";
+
+const AchievementImageCarousel = ({ images, name }) => {
+    const [imgIndex, setImgIndex] = useState(0);
+
+    if (!images || images.length === 0) return null;
+
+    return (
+        <div className="relative z-10 w-full h-full flex flex-col items-center justify-center gap-6">
+            {/* Main Image Display */}
+            <div className="relative w-full flex-1 flex items-center justify-center overflow-hidden">
+                <AnimatePresence mode="wait">
+                    <motion.img 
+                        key={imgIndex}
+                        src={images[imgIndex]} 
+                        alt={`${name} - Image ${imgIndex + 1}`} 
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -20 }}
+                        transition={{ duration: 0.3 }}
+                        className="w-full h-full object-contain drop-shadow-[0_20px_60px_rgba(0,0,0,0.6)]"
+                    />
+                </AnimatePresence>
+
+                {images.length > 1 && (
+                    <>
+                        {/* Inset internal arrows more so they don't overlap with outer ones */}
+                        <button 
+                            onClick={(e) => { e.stopPropagation(); setImgIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1)); }}
+                            className="absolute left-4 top-1/2 -translate-y-1/2 p-2 text-white transition-all bg-black/60 hover:bg-vscode-blue rounded-full border border-white/10 backdrop-blur-md shadow-xl z-10"
+                        >
+                            <ChevronLeft size={16} />
+                        </button>
+                        <button 
+                            onClick={(e) => { e.stopPropagation(); setImgIndex((prev) => (prev + 1) % images.length); }}
+                            className="absolute right-4 top-1/2 -translate-y-1/2 p-2 text-white transition-all bg-black/60 hover:bg-vscode-blue rounded-full border border-white/10 backdrop-blur-md shadow-xl z-10"
+                        >
+                            <ChevronRight size={16} />
+                        </button>
+                    </>
+                )}
+            </div>
+            
+            {images.length > 1 && (
+                /* Interactive Thumbnails - Shifted slightly up from very bottom */
+                <div className="flex gap-2 p-2 mb-2 bg-black/60 rounded-2xl border border-white/10 backdrop-blur-xl shadow-2xl z-20">
+                    {images.map((img, i) => (
+                        <button 
+                            key={i}
+                            onClick={(e) => { e.stopPropagation(); setImgIndex(i); }}
+                            className={`relative w-10 h-10 rounded-lg overflow-hidden border-2 transition-all ${i === imgIndex ? 'border-vscode-blue scale-110 shadow-[0_0_15px_rgba(0,122,204,0.4)]' : 'border-transparent opacity-40 hover:opacity-100'}`}
+                        >
+                            <img src={img} className="w-full h-full object-cover" alt="thumbnail" />
+                        </button>
+                    ))}
+                </div>
+            )}
+        </div>
+    );
+};
 
 const achievements = [
     {
         id: "01",
         name: "Academic Excellence",
         publisher: "University of Mumbai",
-        icon: <Award className="text-vscode-blue" size={24} />,
+        icon: <Award size={32} />,
         year: "2024",
         rank: "GPA 10.0",
-        description: "Secured First Rank in Third Year with Perfect 10.0 GPA.",
-        details: "Top performer across all semesters. Cumulative CGPA: 9.69.",
-        stars: 5,
-        category: "EDUCATION",
+        description: "Secured First Rank in Third Year with Perfect 10.0 GPA. Consistently maintained top performance across all academic semesters.",
+        highlights: ["GPA 10.0", "First Rank"],
         images: [academicImg],
-        color: "group-hover:shadow-vscode-blue/20 group-hover:border-vscode-blue/30",
-        accent: "text-vscode-blue"
+        color: "text-vscode-blue",
+        bg: "bg-vscode-blue/10",
+        border: "border-vscode-blue/30"
     },
     {
         id: "02",
         name: "Hacktivate Solution",
         publisher: "Hacktivate 2024",
-        icon: <ShieldCheck className="text-vscode-purple" size={24} />,
+        icon: <ShieldCheck size={32} />,
         year: "2024",
         rank: "WINNER",
-        description: "2nd Runner-up for AI Security Solution in 24h Hackathon.",
-        details: "Developed a real-time anomaly detection system using LSTM networks.",
-        stars: 5,
-        category: "SECURITY",
+        description: "Secured 2nd Runner-up for an innovative AI Security Solution in a 24-hour Hackathon. Developed a real-time anomaly detection system using advanced LSTM networks.",
+        highlights: ["AI Security", "2nd Runner-up"],
         images: [hacktivateImg],
-        color: "group-hover:shadow-vscode-purple/20 group-hover:border-vscode-purple/30",
-        accent: "text-vscode-purple"
+        color: "text-vscode-purple",
+        bg: "bg-vscode-purple/10",
+        border: "border-vscode-purple/30"
     },
     {
         id: "02b",
         name: "Hack IITK 2026",
         publisher: "C3iHub, IIT Kanpur",
-        icon: <ShieldCheck className="text-vscode-purple" size={24} />,
+        icon: <ShieldCheck size={32} />,
         year: "2026",
         rank: "3RD PLACE",
-        description: "3rd place in Cybersecurity hackathon among 9000+ participants.",
-        details: "Developed a fully offline policy gap analysis system using local LLMs.",
-        stars: 5,
-        category: "SECURITY",
-        images: [],
-        color: "group-hover:shadow-vscode-purple/20 group-hover:border-vscode-purple/30",
-        accent: "text-vscode-purple"
-    },
-    {
-        id: "03",
-        name: "CodeMania Contest",
-        publisher: "CSI India",
-        icon: <Trophy className="text-vscode-orange" size={24} />,
-        year: "2023",
-        rank: "TOP 3",
-        description: "State-level competitive programming winner (12 Problems/4 Hrs).",
-        details: "High-speed algorithmic problem solving in dynamic programming.",
-        stars: 4,
-        category: "ALGORITHMS",
-        images: [],
-        color: "group-hover:shadow-vscode-orange/20 group-hover:border-vscode-orange/30",
-        accent: "text-vscode-orange"
-    },
-    {
-        id: "04",
-        name: "Open Innovation",
-        publisher: "TechSprint 2026",
-        icon: <Fingerprint className="text-vscode-teal" size={24} />,
-        year: "2026",
-        rank: "3RD PLACE",
-        description: "Winner at Google Developer Group (GDG) Hackathon.",
-        details: "Recognized for innovative problem-solving in open innovation track.",
-        stars: 5,
-        category: "HACKATHON",
-        images: [],
-        color: "group-hover:shadow-vscode-teal/20 group-hover:border-vscode-teal/30",
-        accent: "text-vscode-teal"
-    },
-    {
-        id: "05",
-        name: "Cryptex 2023",
-        publisher: "Web Dev Contest",
-        icon: <Star className="text-vscode-yellow" size={24} />,
-        year: "2023",
-        rank: "1ST PRIZE",
-        description: "Winner of the Web Development competition at Cryptex 2023.",
-        details: "Developed a responsive and feature-rich web application under time constraints.",
-        stars: 5,
-        category: "WEB_DEV",
-        images: [],
-        color: "group-hover:shadow-vscode-yellow/20 group-hover:border-vscode-yellow/30",
-        accent: "text-vscode-yellow"
+        description: "Achieved 3rd place in a highly competitive Cybersecurity hackathon among 9000+ participants. Engineered a fully offline policy gap analysis system using localized LLMs.",
+        highlights: ["Cybersecurity", "9000+ Participants"],
+        images: [
+            "/achievements/hackiitk_1.jpg",
+            "/achievements/hackiitk_2.png",
+            "/achievements/hackiitk_3.png"
+        ],
+        color: "text-vscode-purple",
+        bg: "bg-vscode-purple/10",
+        border: "border-vscode-purple/30"
     },
     {
         id: "06",
         name: "Fraud Research",
         publisher: "ICNTE Conf.",
-        icon: <BookOpen className="text-vscode-green" size={24} />,
+        icon: <BookOpen size={32} />,
         year: "2026",
         rank: "PUBLISHED",
-        description: "International Research Paper on Security & Cryptography.",
-        details: "Proposed a novel cryptographic betting mechanism at ICNTE 2026.",
-        stars: 4,
-        category: "RESEARCH",
+        description: "Authored and published an International Research Paper on Security & Cryptography. Proposed a novel cryptographic betting mechanism presented at ICNTE 2026.",
+        highlights: ["Cryptography", "Research Paper"],
         images: [pubImg],
-        color: "group-hover:shadow-vscode-green/20 group-hover:border-vscode-green/30",
-        accent: "text-vscode-green"
+        color: "text-vscode-green",
+        bg: "bg-vscode-green/10",
+        border: "border-vscode-green/30"
+    },
+    {
+        id: "03",
+        name: "CodeMania Contest",
+        publisher: "CSI India",
+        icon: <Trophy size={32} />,
+        year: "2023",
+        rank: "TOP 3",
+        description: "Emerged as a State-level competitive programming winner (12 Problems / 4 Hrs). Showcased high-speed algorithmic problem-solving skills in dynamic programming.",
+        highlights: ["Algorithms", "Top 3"],
+        images: [],
+        color: "text-vscode-orange",
+        bg: "bg-vscode-orange/10",
+        border: "border-vscode-orange/30"
+    },
+    {
+        id: "04",
+        name: "Open Innovation",
+        publisher: "TechSprint 2026",
+        icon: <Fingerprint size={32} />,
+        year: "2026",
+        rank: "3RD PLACE",
+        description: "Secured a winning position at the Google Developer Group (GDG) Hackathon. Recognized for innovative problem-solving in the open innovation track.",
+        highlights: ["GDG Hackathon", "3rd Place"],
+        images: [],
+        color: "text-vscode-teal",
+        bg: "bg-vscode-teal/10",
+        border: "border-vscode-teal/30"
+    },
+    {
+        id: "05",
+        name: "Cryptex 2023",
+        publisher: "Web Dev Contest",
+        icon: <Star size={32} />,
+        year: "2023",
+        rank: "1ST PRIZE",
+        description: "Winner of the Web Development competition at Cryptex 2023. Developed a responsive and highly feature-rich web application under strict time constraints.",
+        highlights: ["Web Dev", "1st Prize"],
+        images: [],
+        color: "text-vscode-yellow",
+        bg: "bg-vscode-yellow/10",
+        border: "border-vscode-yellow/30"
     }
 ];
 
-const BentoCard = ({ item, index, onClick }) => {
-    return (
-        <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ delay: index * 0.1, duration: 0.4 }}
-            viewport={{ once: true }}
-            whileHover={{ y: -5, scale: 1.02 }}
-            onClick={() => onClick(item)}
-            className={`
-                group relative bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-4 md:p-6 cursor-pointer overflow-hidden
-                flex flex-col justify-between h-auto min-h-[200px] md:h-[280px] w-full transition-all duration-300
-                ${item.color} hover:shadow-2xl hover:bg-white/[0.07]
-            `}
-        >
-            {/* Holographic Header */}
-            <div className="flex justify-between items-start z-10 mb-2 md:mb-0">
-                <div className="p-2 md:p-3 bg-black/40 rounded-xl border border-white/5 backdrop-blur-sm">
-                    {item.icon}
-                </div>
-                <div className="flex flex-col items-end gap-1">
-                    <span className="text-[9px] md:text-[10px] font-mono tracking-widest text-secondary/50 uppercase">{item.category}</span>
-                    <div className="flex items-center gap-1 text-[9px] md:text-[10px] bg-white/10 px-2 py-0.5 rounded-full text-secondary">
-                        <Hash size={10} /> {item.id}
-                    </div>
-                </div>
-            </div>
-
-            {/* Content Body */}
-            <div className="z-10 mt-2 md:mt-4 flex-grow">
-                <h3 className="text-lg md:text-xl font-bold text-white mb-2 leading-tight group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-secondary transition-all">
-                    {item.name}
-                </h3>
-                <p className="text-xs text-secondary/70 leading-relaxed line-clamp-3">
-                    {item.description}
-                </p>
-            </div>
-
-            {/* Tech Footer */}
-            <div className="z-10 mt-4 pt-3 md:pt-4 border-t border-white/5 flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                    <span className={`text-xs font-bold font-mono ${item.accent}`}>{item.rank}</span>
-                </div>
-                <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center bg-black/20 group-hover:bg-white/20 transition-colors">
-                    <ArrowUpRight size={14} className="text-white" />
-                </div>
-            </div>
-
-            {/* Background Decor */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-gradient-to-br from-white/5 to-transparent rounded-full blur-3xl -z-0 opacity-0 group-hover:opacity-20 transition-opacity duration-500" />
-            <div className="absolute bottom-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                <ScanLine size={120} />
-            </div>
-        </motion.div>
-    );
-};
-
-const DetailModal = ({ isOpen, onClose, item }) => {
-    // 1. Hooks MUST be top-level and unconditional
-    const [imgIdx, setImgIdx] = useState(0);
-
-    if (typeof document === 'undefined') return null;
-
-    // 2. Wrap content in Portal + AnimatePresence
-    return createPortal(
-        <AnimatePresence>
-            {isOpen && item && (
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="fixed inset-0 z-[10000] bg-black/95 md:bg-black/80 backdrop-blur-none md:backdrop-blur-md flex items-center justify-center p-4"
-                    onClick={onClose}
-                >
-                    <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none hidden md:block" />
-
-                    <motion.div
-                        initial={{ scale: 0.95, y: 20 }}
-                        animate={{ scale: 1, y: 0 }}
-                        exit={{ scale: 0.95, y: 20 }}
-                        onClick={(e) => e.stopPropagation()}
-                        className="w-full max-w-4xl bg-[#111] md:bg-[#0a0a0a] border border-white/10 rounded-2xl md:rounded-3xl overflow-hidden shadow-xl md:shadow-2xl relative flex flex-col md:flex-row h-auto max-h-[85vh] will-change-transform transform-gpu"
-                    >
-                        {/* Close Button */}
-                        <button
-                            onClick={onClose}
-                            className="absolute top-4 right-4 z-[99999] p-2 bg-black/60 rounded-full text-white/50 hover:text-white hover:bg-black/80 transition-colors backdrop-blur-sm border border-white/10 cursor-pointer"
-                        >
-                            <X size={20} />
-                        </button>
-
-                        {/* Image / Visual Side */}
-                        <div className="w-full md:w-1/2 bg-[#000] relative flex items-center justify-center p-6 border-b md:border-b-0 md:border-r border-white/10 overflow-hidden">
-                            {/* Ambient Glow */}
-                            <div className={`absolute inset-0 bg-gradient-to-br ${(item.accent || 'text-white').replace('text-', 'from-')}/20 to-transparent opacity-20`} />
-
-                            {item.images && item.images.length > 0 ? (
-                                <div className="relative z-10 w-full h-full flex items-center justify-center group">
-                                    <img src={item.images[imgIdx]} alt="proof" className="max-h-[300px] object-contain shadow-2xl rounded-lg border border-white/10" />
-                                    {item.images.length > 1 && (
-                                        <div className="absolute bottom-4 flex gap-3">
-                                            <button onClick={() => setImgIdx((i) => (i - 1 + item.images.length) % item.images.length)} className="p-2 bg-black/50 text-white rounded-full border border-white/10 hover:bg-white/20"><ChevronLeft size={16} /></button>
-                                            <button onClick={() => setImgIdx((i) => (i + 1) % item.images.length)} className="p-2 bg-black/50 text-white rounded-full border border-white/10 hover:bg-white/20"><ChevronRight size={16} /></button>
-                                        </div>
-                                    )}
-                                </div>
-                            ) : (
-                                <div className="flex flex-col items-center gap-3 text-white/20 z-10">
-                                    <Activity size={48} strokeWidth={1} />
-                                    <span className="text-xs font-mono tracking-widest">DATA_ENCRYPTED</span>
-                                </div>
-                            )}
-
-                            {/* Decorative Patterns */}
-                            <div className="absolute bottom-4 left-4 text-[10px] font-mono text-white/20 flex flex-col gap-1">
-                                <span>IMG_Res: 4096x2160</span>
-                                <span>MIME: image/png</span>
-                            </div>
-                        </div>
-
-                        {/* Content Details Side */}
-                        <div className="w-full md:w-1/2 p-5 md:p-8 bg-[#0a0a0a] flex flex-col overflow-y-auto">
-                            <div className="mb-6">
-                                <div className="flex items-center gap-2 mb-2">
-                                    <span className={`px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider bg-white/5 ${item.accent || 'text-white'}`}>
-                                        {item.category}
-                                    </span>
-                                    <span className="text-[10px] text-secondary/40 font-mono">
-                                        {item.year}.REL
-                                    </span>
-                                </div>
-                                <h2 className="text-3xl font-bold text-white mb-2 leading-tight">
-                                    {item.name}
-                                </h2>
-                                <p className="text-sm text-secondary/60 flex items-center gap-2">
-                                    <ExternalLink size={12} /> {item.publisher}
-                                </p>
-                            </div>
-
-                            <div className="space-y-6 flex-1">
-                                <p className="text-sm md:text-base text-secondary/80 leading-relaxed font-light">
-                                    {item.description}
-                                </p>
-
-                                <div className="p-4 rounded-xl bg-white/[0.03] border border-white/5 space-y-3">
-                                    <h4 className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
-                                        <ScanLine size={12} className="text-vscode-blue" />
-                                        Executive Summary
-                                    </h4>
-                                    <p className="text-xs text-secondary/60 leading-relaxed font-mono">
-                                        {item.details}
-                                    </p>
-                                </div>
-
-                                <div className="flex items-center justify-between pt-4 border-t border-white/5">
-                                    <div>
-                                        <span className="text-[10px] text-secondary/40 uppercase block mb-1">Recognition Level</span>
-                                        <span className={`text-lg font-bold ${item.accent || 'text-white'}`}>{item.rank}</span>
-                                    </div>
-                                    <div className="flex gap-1">
-                                        {[...Array(5)].map((_, i) => (
-                                            <Star key={i} size={14} className={i < item.stars ? "fill-white text-white" : "text-white/10"} />
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </motion.div>
-                </motion.div>
-            )}
-        </AnimatePresence>,
-        document.body
-    );
-};
-
 const Achievements = () => {
-    const [selectedItem, setSelectedItem] = useState(null);
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const [isPaused, setIsPaused] = useState(false);
+
+    useEffect(() => {
+        if (isPaused) return;
+        
+        const timer = setInterval(() => {
+            setCurrentIndex((prev) => (prev + 1) % achievements.length);
+        }, 4000); // Increased to 4 seconds for better readability
+
+        return () => clearInterval(timer);
+    }, [isPaused]);
+
+    const handleNext = () => setCurrentIndex((prev) => (prev + 1) % achievements.length);
+    const handlePrev = () => setCurrentIndex((prev) => (prev === 0 ? achievements.length - 1 : prev - 1));
+
+    const activeItem = achievements[currentIndex];
 
     return (
-        <section id="achievements" className="py-24 px-6 relative overflow-hidden">
-            {/* Background Atmosphere */}
-            <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-vscode-purple/5 blur-[120px] rounded-full pointer-events-none -z-10" />
-            <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-vscode-blue/5 blur-[120px] rounded-full pointer-events-none -z-10" />
-
-            <div className="container-width max-w-6xl mx-auto">
-                {/* Header */}
-                <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
-                    <div>
-                        <h2 className="text-sm font-mono text-vscode-blue uppercase tracking-widest mb-2">
-                            05 // Hall of Records
-                        </h2>
-                        <h1 className="text-4xl md:text-5xl font-bold text-white">
-                            Awards & <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-white/40">Honors</span>
-                        </h1>
-                    </div>
-                    <p className="text-secondary/60 text-sm max-w-sm leading-relaxed">
-                        A curated collection of verified credentials, hackathon victories, and research contributions.
-                    </p>
-                </div>
-
-                {/* Bento Grid Layout */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {achievements.map((item, index) => (
-                        <BentoCard
-                            key={index}
-                            item={item}
-                            index={index}
-                            onClick={setSelectedItem}
-                        />
-                    ))}
-                </div>
+        <section id="achievements" className="py-24 sm:py-32 px-4 sm:px-6 relative overflow-hidden bg-background">
+            {/* Dynamic Background Glow based on active item */}
+            <div className="absolute inset-0 transition-colors duration-1000 ease-in-out">
+                <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full blur-[150px] opacity-20 pointer-events-none transition-all duration-1000 ${activeItem.bg}`} />
             </div>
 
-            <DetailModal isOpen={!!selectedItem} onClose={() => setSelectedItem(null)} item={selectedItem} />
+            <div className="max-w-5xl mx-auto relative z-10">
+                {/* Header */}
+                <div className="flex flex-col items-center mb-10 text-center">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-surfaceLight border border-border/50 mb-6"
+                    >
+                        <span className="w-2 h-2 rounded-full bg-vscode-purple animate-pulse"></span>
+                        <span className="text-sm font-mono text-secondary">05 // Hall of Records</span>
+                    </motion.div>
+                    
+                    <motion.h2
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.1 }}
+                        className="text-4xl md:text-5xl font-bold text-primary mb-4"
+                    >
+                        Awards & Honors
+                    </motion.h2>
+                </div>
+
+                {/* Sliding Window Container */}
+                <div 
+                    className="relative w-full h-[800px] md:h-[550px] rounded-[2.5rem] bg-surface/30 backdrop-blur-3xl border border-border/50 overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.3)] group"
+                    onMouseEnter={() => setIsPaused(true)}
+                    onMouseLeave={() => setIsPaused(false)}
+                    onTouchStart={() => setIsPaused(true)}
+                    onTouchEnd={() => setIsPaused(false)}
+                >
+                    {/* Visual Progress Bar (Top) */}
+                    {!isPaused && (
+                        <motion.div 
+                            key={`progress-${currentIndex}`}
+                            initial={{ width: 0 }}
+                            animate={{ width: "100%" }}
+                            transition={{ duration: 4, ease: "linear" }}
+                            className={`absolute top-0 left-0 h-1 z-30 opacity-50 bg-gradient-to-r from-transparent via-vscode-blue to-transparent`}
+                        />
+                    )}
+
+                    {/* Slides */}
+                    <AnimatePresence mode="wait">
+                        <motion.div
+                            key={currentIndex}
+                            initial={{ opacity: 0, y: -40, scale: 0.98 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, y: 40, scale: 0.98 }}
+                            transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+                            className="absolute inset-0 flex flex-col md:flex-row"
+                        >
+                            {/* Text Content - Narrowed to 35% */}
+                            <div className="w-full md:w-[38%] p-8 sm:p-10 md:p-12 flex flex-col justify-center h-[45%] md:h-full">
+                                <div className="flex items-center gap-4 mb-4">
+                                    <div className={`p-3.5 rounded-xl ${activeItem.bg} ${activeItem.color} border ${activeItem.border} shadow-lg`}>
+                                        {activeItem.icon}
+                                    </div>
+                                    <div className={`px-3 py-1.5 rounded-lg text-[10px] font-bold font-mono tracking-widest uppercase ${activeItem.bg} ${activeItem.color} border border-current/20`}>
+                                        {activeItem.rank}
+                                    </div>
+                                </div>
+                                
+                                <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary mb-3 leading-tight">
+                                    {activeItem.name}
+                                </h3>
+                                <div className="flex items-center gap-2 text-xs font-mono mb-6 opacity-80">
+                                    <span className={activeItem.color}>{activeItem.publisher}</span>
+                                    <span className="w-1.5 h-1.5 rounded-full bg-border"></span>
+                                    <span className="text-secondary/60">{activeItem.year}</span>
+                                </div>
+
+                                <p className="text-secondary/80 text-sm sm:text-base leading-relaxed mb-6 font-light line-clamp-4 md:line-clamp-none">
+                                    {activeItem.description}
+                                </p>
+
+                                <div className="flex flex-wrap gap-2 mt-auto">
+                                    {activeItem.highlights.map((highlight, i) => (
+                                        <span key={i} className="px-3 py-1 text-[10px] font-mono rounded-lg bg-black/40 border border-border/50 text-secondary/80 backdrop-blur-md">
+                                            {highlight}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Image Content - Expanded to 62% and reduced padding */}
+                            <div className="w-full md:w-[62%] bg-black/20 border-t md:border-t-0 md:border-l border-border/30 p-4 md:p-6 flex items-center justify-center relative h-[55%] md:h-full overflow-hidden">
+                                <div className={`absolute inset-0 ${activeItem.bg} opacity-10 blur-[120px]`} />
+                                
+                                {activeItem.images && activeItem.images.length > 0 ? (
+                                    <AchievementImageCarousel images={activeItem.images} name={activeItem.name} />
+                                ) : (
+                                    <div className="relative z-10 flex flex-col items-center justify-center text-secondary/10">
+                                        {activeItem.icon}
+                                        <span className="mt-6 text-[10px] font-mono tracking-[0.3em] uppercase">Credential_Digital</span>
+                                    </div>
+                                )}
+                            </div>
+                        </motion.div>
+                    </AnimatePresence>
+
+                    {/* Navigation Controls (Visible on hover) */}
+                    <button 
+                        onClick={handlePrev}
+                        className="absolute left-6 top-1/2 -translate-y-1/2 z-40 w-12 h-12 rounded-full bg-black/60 text-white flex items-center justify-center border border-white/10 opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-vscode-blue hover:scale-110 backdrop-blur-xl"
+                    >
+                        <ChevronLeft size={24} />
+                    </button>
+                    <button 
+                        onClick={handleNext}
+                        className="absolute right-6 top-1/2 -translate-y-1/2 z-40 w-12 h-12 rounded-full bg-black/60 text-white flex items-center justify-center border border-white/10 opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-vscode-blue hover:scale-110 backdrop-blur-xl"
+                    >
+                        <ChevronRight size={24} />
+                    </button>
+
+                    {/* Progress Dots - Moved to TOP to avoid overlap with thumbnails */}
+                    <div className="absolute top-8 left-1/2 -translate-x-1/2 flex gap-3 z-40 px-5 py-3 bg-black/40 rounded-2xl border border-white/5 backdrop-blur-xl">
+                        {achievements.map((_, idx) => (
+                            <button
+                                key={idx}
+                                onClick={() => setCurrentIndex(idx)}
+                                className={`h-1.5 rounded-full transition-all duration-500 ${idx === currentIndex ? 'w-10 bg-vscode-blue' : 'w-2 bg-white/20 hover:bg-white/40'}`}
+                            />
+                        ))}
+                    </div>
+                </div>
+            </div>
         </section>
     );
 };
