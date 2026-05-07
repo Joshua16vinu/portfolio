@@ -29,7 +29,7 @@ const leadershipData = [
         icon: <ShieldCheck size={24} className="text-vscode-teal" />,
         date: "2023 - 2024",
         description: "Managed the digital presence and social growth. Conducted hands-on training workshops focusing on Machine Learning and Deep Learning.",
-        highlights: ["ML Training", "Digital Growth"],
+        highlights: ["10+ Workshops", "500+ Members", "Social Growth"],
         images: [techCoord1],
         className: "md:col-span-1 lg:col-span-1"
     },

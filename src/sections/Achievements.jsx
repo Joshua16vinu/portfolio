@@ -252,7 +252,7 @@ const Achievements = () => {
                             animate={{ opacity: 1, y: 0, scale: 1 }}
                             exit={{ opacity: 0, y: 40, scale: 0.98 }}
                             transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
-                            className="absolute inset-0 flex flex-col md:flex-row"
+                            className="absolute inset-0 flex flex-col md:flex-row pt-20 md:pt-12"
                         >
                             {/* Text Content - Narrowed to 35% */}
                             <div className="w-full md:w-[38%] p-8 sm:p-10 md:p-12 flex flex-col justify-center h-[45%] md:h-full">
