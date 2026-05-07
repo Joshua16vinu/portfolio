@@ -2,6 +2,14 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, Users, Mic, Presentation, ShieldCheck } from "lucide-react";
 
+// Import leadership assets
+import aidl1 from "../assets/leadership/aidl_1.jpg";
+import aidl2 from "../assets/leadership/aidl_2.jpg";
+import aidl3 from "../assets/leadership/aidl_3.jpg";
+import aidl4 from "../assets/leadership/aidl_4.jpg";
+import techCoord1 from "../assets/leadership/tech_coord_1.jpg";
+import cryptex1 from "../assets/leadership/cryptex_1.png";
+
 const leadershipData = [
     {
         id: "chairperson",
@@ -11,12 +19,7 @@ const leadershipData = [
         date: "2023 - 2024",
         description: "Led a community of 150+ members. Orchestrated the national level WebRush'24 Hackathon, mentored over 500 students, and curated the technical curriculum.",
         highlights: ["150+ Members", "WebRush'24 Hackathon", "Mentored 500+"],
-        images: [
-            "/leadership/aidl_1.jpg",
-            "/leadership/aidl_2.jpg",
-            "/leadership/aidl_3.jpg",
-            "/leadership/aidl_4.jpg"
-        ],
+        images: [aidl1, aidl2, aidl3, aidl4],
         className: "md:col-span-2 lg:col-span-2"
     },
     {
@@ -27,17 +30,15 @@ const leadershipData = [
         date: "2023 - 2024",
         description: "Managed the digital presence and social growth. Conducted hands-on training workshops focusing on Machine Learning and Deep Learning.",
         highlights: ["ML Training", "Digital Growth"],
-        images: [
-            "/leadership/tech_coord_1.jpg"
-        ],
+        images: [techCoord1],
         className: "md:col-span-1 lg:col-span-1"
     },
     {
         id: "guest_speaker_2",
-        role: "Guest Speaker",
-        org: "Dept of IT",
+        role: "Guest Speaker- AI & ML in Finance",
+        org: "Department of Information Technology, FCRIT",
         icon: <Presentation size={24} className="text-vscode-orange" />,
-        date: "2023",
+        date: "2025",
         description: "Conducted a Short Term Training Program focused on practical AI/ML applications for an audience of 100+ participants. Feedback was highly positive.",
         highlights: ["AI/ML STTP", "100+ Participants", "Hands-on"],
         images: [],
@@ -46,14 +47,12 @@ const leadershipData = [
     {
         id: "guest_speaker_1",
         role: "Guest Speaker",
-        org: "Cryptex'24",
+        org: "Cryptex",
         icon: <Mic size={24} className="text-vscode-purple" />,
         date: "2024",
         description: "Delivered a dedicated session on Foundational ML to 30 attendees. Shared detailed Colab notebooks and presentations.",
         highlights: ["Foundational ML", "30 Attendees"],
-        images: [
-            "/leadership/cryptex_1.png"
-        ],
+        images: [cryptex1],
         className: "md:col-span-2 lg:col-span-2"
     }
 ];

@@ -6,6 +6,13 @@ import academicImg from "../assets/achievements/academic_rank.png";
 import hacktivateImg from "../assets/achievements/hacktivate_runner_up.png";
 import pubImg from "../assets/achievements/publication.png";
 
+// Import new achievement assets
+import hackiitk1 from "../assets/achievements/hackiitk_1.jpg";
+import hackiitk2 from "../assets/achievements/hackiitk_2.png";
+import hackiitk3 from "../assets/achievements/hackiitk_3.png";
+import techsprint1 from "../assets/achievements/techsprint_1.png";
+import techsprint2 from "../assets/achievements/techsprint_2.png";
+
 const AchievementImageCarousel = ({ images, name }) => {
     const [imgIndex, setImgIndex] = useState(0);
 
@@ -16,10 +23,10 @@ const AchievementImageCarousel = ({ images, name }) => {
             {/* Main Image Display */}
             <div className="relative w-full flex-1 flex items-center justify-center overflow-hidden">
                 <AnimatePresence mode="wait">
-                    <motion.img 
+                    <motion.img
                         key={imgIndex}
-                        src={images[imgIndex]} 
-                        alt={`${name} - Image ${imgIndex + 1}`} 
+                        src={images[imgIndex]}
+                        alt={`${name} - Image ${imgIndex + 1}`}
                         initial={{ opacity: 0, x: 20 }}
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: -20 }}
@@ -31,27 +38,27 @@ const AchievementImageCarousel = ({ images, name }) => {
                 {images.length > 1 && (
                     <>
                         {/* Inset internal arrows more so they don't overlap with outer ones */}
-                        <button 
+                        <button
                             onClick={(e) => { e.stopPropagation(); setImgIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1)); }}
-                            className="absolute left-4 top-1/2 -translate-y-1/2 p-2 text-white transition-all bg-black/60 hover:bg-vscode-blue rounded-full border border-white/10 backdrop-blur-md shadow-xl z-10"
+                            className="absolute left-4 top-1/2 -translate-y-1/2 p-2 text-white transition-all bg-white/10 hover:bg-vscode-blue rounded-full border border-white/10 backdrop-blur-md shadow-xl z-10"
                         >
                             <ChevronLeft size={16} />
                         </button>
-                        <button 
+                        <button
                             onClick={(e) => { e.stopPropagation(); setImgIndex((prev) => (prev + 1) % images.length); }}
-                            className="absolute right-4 top-1/2 -translate-y-1/2 p-2 text-white transition-all bg-black/60 hover:bg-vscode-blue rounded-full border border-white/10 backdrop-blur-md shadow-xl z-10"
+                            className="absolute right-4 top-1/2 -translate-y-1/2 p-2 text-white transition-all bg-white/10 hover:bg-vscode-blue rounded-full border border-white/10 backdrop-blur-md shadow-xl z-10"
                         >
                             <ChevronRight size={16} />
                         </button>
                     </>
                 )}
             </div>
-            
+
             {images.length > 1 && (
                 /* Interactive Thumbnails - Shifted slightly up from very bottom */
-                <div className="flex gap-2 p-2 mb-2 bg-black/60 rounded-2xl border border-white/10 backdrop-blur-xl shadow-2xl z-20">
+                <div className="flex gap-2 p-2 mb-2 bg-white/10 rounded-2xl border border-white/10 backdrop-blur-xl shadow-2xl z-20">
                     {images.map((img, i) => (
-                        <button 
+                        <button
                             key={i}
                             onClick={(e) => { e.stopPropagation(); setImgIndex(i); }}
                             className={`relative w-10 h-10 rounded-lg overflow-hidden border-2 transition-all ${i === imgIndex ? 'border-vscode-blue scale-110 shadow-[0_0_15px_rgba(0,122,204,0.4)]' : 'border-transparent opacity-40 hover:opacity-100'}`}
@@ -103,11 +110,7 @@ const achievements = [
         rank: "3RD PLACE",
         description: "Achieved 3rd place in a highly competitive Cybersecurity hackathon among 9000+ participants. Engineered a fully offline policy gap analysis system using localized LLMs.",
         highlights: ["Cybersecurity", "9000+ Participants"],
-        images: [
-            "/achievements/hackiitk_1.jpg",
-            "/achievements/hackiitk_2.png",
-            "/achievements/hackiitk_3.png"
-        ],
+        images: [hackiitk2, hackiitk1, hackiitk3],
         color: "text-vscode-purple",
         bg: "bg-vscode-purple/10",
         border: "border-vscode-purple/30"
@@ -142,14 +145,14 @@ const achievements = [
     },
     {
         id: "04",
-        name: "Open Innovation",
-        publisher: "TechSprint 2026",
+        name: "TechSprint 2026",
+        publisher: "Google Developer Group",
         icon: <Fingerprint size={32} />,
         year: "2026",
         rank: "3RD PLACE",
-        description: "Secured a winning position at the Google Developer Group (GDG) Hackathon. Recognized for innovative problem-solving in the open innovation track.",
+        description: "Secured a winning position at the Google Developer Group's TechSprint 2026 Hackathon. Recognized for innovative problem-solving in the open innovation track.",
         highlights: ["GDG Hackathon", "3rd Place"],
-        images: [],
+        images: [techsprint1, techsprint2],
         color: "text-vscode-teal",
         bg: "bg-vscode-teal/10",
         border: "border-vscode-teal/30"
@@ -176,7 +179,7 @@ const Achievements = () => {
 
     useEffect(() => {
         if (isPaused) return;
-        
+
         const timer = setInterval(() => {
             setCurrentIndex((prev) => (prev + 1) % achievements.length);
         }, 4000); // Increased to 4 seconds for better readability
@@ -190,7 +193,7 @@ const Achievements = () => {
     const activeItem = achievements[currentIndex];
 
     return (
-        <section id="achievements" className="py-24 sm:py-32 px-4 sm:px-6 relative overflow-hidden bg-background">
+        <section id="achievements" className="py-24 sm:py-32 px-4 sm:px-6 relative overflow-hidden">
             {/* Dynamic Background Glow based on active item */}
             <div className="absolute inset-0 transition-colors duration-1000 ease-in-out">
                 <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full blur-[150px] opacity-20 pointer-events-none transition-all duration-1000 ${activeItem.bg}`} />
@@ -208,7 +211,7 @@ const Achievements = () => {
                         <span className="w-2 h-2 rounded-full bg-vscode-purple animate-pulse"></span>
                         <span className="text-sm font-mono text-secondary">05 // Hall of Records</span>
                     </motion.div>
-                    
+
                     <motion.h2
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
@@ -221,7 +224,7 @@ const Achievements = () => {
                 </div>
 
                 {/* Sliding Window Container */}
-                <div 
+                <div
                     className="relative w-full h-[800px] md:h-[550px] rounded-[2.5rem] bg-surface/30 backdrop-blur-3xl border border-border/50 overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.3)] group"
                     onMouseEnter={() => setIsPaused(true)}
                     onMouseLeave={() => setIsPaused(false)}
@@ -230,7 +233,7 @@ const Achievements = () => {
                 >
                     {/* Visual Progress Bar (Top) */}
                     {!isPaused && (
-                        <motion.div 
+                        <motion.div
                             key={`progress-${currentIndex}`}
                             initial={{ width: 0 }}
                             animate={{ width: "100%" }}
@@ -259,7 +262,7 @@ const Achievements = () => {
                                         {activeItem.rank}
                                     </div>
                                 </div>
-                                
+
                                 <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary mb-3 leading-tight">
                                     {activeItem.name}
                                 </h3>
@@ -275,7 +278,7 @@ const Achievements = () => {
 
                                 <div className="flex flex-wrap gap-2 mt-auto">
                                     {activeItem.highlights.map((highlight, i) => (
-                                        <span key={i} className="px-3 py-1 text-[10px] font-mono rounded-lg bg-black/40 border border-border/50 text-secondary/80 backdrop-blur-md">
+                                        <span key={i} className="px-3 py-1 text-[10px] font-mono rounded-lg bg-surfaceLight/30 border border-border/50 text-secondary/80 backdrop-blur-md">
                                             {highlight}
                                         </span>
                                     ))}
@@ -283,9 +286,9 @@ const Achievements = () => {
                             </div>
 
                             {/* Image Content - Expanded to 62% and reduced padding */}
-                            <div className="w-full md:w-[62%] bg-black/20 border-t md:border-t-0 md:border-l border-border/30 p-4 md:p-6 flex items-center justify-center relative h-[55%] md:h-full overflow-hidden">
+                            <div className="w-full md:w-[62%] bg-surface/10 border-t md:border-t-0 md:border-l border-border/30 p-4 md:p-6 flex items-center justify-center relative h-[55%] md:h-full overflow-hidden">
                                 <div className={`absolute inset-0 ${activeItem.bg} opacity-10 blur-[120px]`} />
-                                
+
                                 {activeItem.images && activeItem.images.length > 0 ? (
                                     <AchievementImageCarousel images={activeItem.images} name={activeItem.name} />
                                 ) : (
@@ -299,21 +302,21 @@ const Achievements = () => {
                     </AnimatePresence>
 
                     {/* Navigation Controls (Visible on hover) */}
-                    <button 
+                    <button
                         onClick={handlePrev}
-                        className="absolute left-6 top-1/2 -translate-y-1/2 z-40 w-12 h-12 rounded-full bg-black/60 text-white flex items-center justify-center border border-white/10 opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-vscode-blue hover:scale-110 backdrop-blur-xl"
+                        className="absolute left-6 top-1/2 -translate-y-1/2 z-40 w-12 h-12 rounded-full bg-white/10 text-white flex items-center justify-center border border-white/10 opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-vscode-blue hover:scale-110 backdrop-blur-xl"
                     >
                         <ChevronLeft size={24} />
                     </button>
-                    <button 
+                    <button
                         onClick={handleNext}
-                        className="absolute right-6 top-1/2 -translate-y-1/2 z-40 w-12 h-12 rounded-full bg-black/60 text-white flex items-center justify-center border border-white/10 opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-vscode-blue hover:scale-110 backdrop-blur-xl"
+                        className="absolute right-6 top-1/2 -translate-y-1/2 z-40 w-12 h-12 rounded-full bg-white/10 text-white flex items-center justify-center border border-white/10 opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-vscode-blue hover:scale-110 backdrop-blur-xl"
                     >
                         <ChevronRight size={24} />
                     </button>
 
                     {/* Progress Dots - Moved to TOP to avoid overlap with thumbnails */}
-                    <div className="absolute top-8 left-1/2 -translate-x-1/2 flex gap-3 z-40 px-5 py-3 bg-black/40 rounded-2xl border border-white/5 backdrop-blur-xl">
+                    <div className="absolute top-8 left-1/2 -translate-x-1/2 flex gap-3 z-40 px-5 py-3 bg-white/5 rounded-2xl border border-white/10 backdrop-blur-xl">
                         {achievements.map((_, idx) => (
                             <button
                                 key={idx}
