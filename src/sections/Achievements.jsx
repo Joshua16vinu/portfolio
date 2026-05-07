@@ -12,6 +12,8 @@ import hackiitk2 from "../assets/achievements/hackiitk_2.png";
 import hackiitk3 from "../assets/achievements/hackiitk_3.png";
 import techsprint1 from "../assets/achievements/techsprint_1.png";
 import techsprint2 from "../assets/achievements/techsprint_2.png";
+import codemania1 from "../assets/achievements/codemania_1.jpg";
+import cryptex1 from "../assets/achievements/cryptex_1.png";
 
 const AchievementImageCarousel = ({ images, name }) => {
     const [imgIndex, setImgIndex] = useState(0);
@@ -74,6 +76,20 @@ const AchievementImageCarousel = ({ images, name }) => {
 
 const achievements = [
     {
+        id: "02b",
+        name: "Hack IITK 2026",
+        publisher: "C3iHub, IIT Kanpur",
+        icon: <ShieldCheck size={32} />,
+        year: "2026",
+        rank: "3RD PLACE",
+        description: "Achieved 3rd place in a highly competitive Cybersecurity hackathon among 9000+ participants. Engineered a fully offline policy gap analysis system using localized LLMs.",
+        highlights: ["Cybersecurity", "9000+ Participants"],
+        images: [hackiitk2, hackiitk1, hackiitk3],
+        color: "text-vscode-purple",
+        bg: "bg-vscode-purple/10",
+        border: "border-vscode-purple/30"
+    },
+    {
         id: "01",
         name: "Academic Excellence",
         publisher: "University of Mumbai",
@@ -102,22 +118,8 @@ const achievements = [
         border: "border-vscode-purple/30"
     },
     {
-        id: "02b",
-        name: "Hack IITK 2026",
-        publisher: "C3iHub, IIT Kanpur",
-        icon: <ShieldCheck size={32} />,
-        year: "2026",
-        rank: "3RD PLACE",
-        description: "Achieved 3rd place in a highly competitive Cybersecurity hackathon among 9000+ participants. Engineered a fully offline policy gap analysis system using localized LLMs.",
-        highlights: ["Cybersecurity", "9000+ Participants"],
-        images: [hackiitk2, hackiitk1, hackiitk3],
-        color: "text-vscode-purple",
-        bg: "bg-vscode-purple/10",
-        border: "border-vscode-purple/30"
-    },
-    {
         id: "06",
-        name: "Fraud Research",
+        name: "Research Paper on Fraud transaction detection In Reverse Auction Systems",
         publisher: "ICNTE Conf.",
         icon: <BookOpen size={32} />,
         year: "2026",
@@ -138,7 +140,7 @@ const achievements = [
         rank: "TOP 3",
         description: "Emerged as a State-level competitive programming winner (12 Problems / 4 Hrs). Showcased high-speed algorithmic problem-solving skills in dynamic programming.",
         highlights: ["Algorithms", "Top 3"],
-        images: [],
+        images: [codemania1],
         color: "text-vscode-orange",
         bg: "bg-vscode-orange/10",
         border: "border-vscode-orange/30"
@@ -166,7 +168,7 @@ const achievements = [
         rank: "1ST PRIZE",
         description: "Winner of the Web Development competition at Cryptex 2023. Developed a responsive and highly feature-rich web application under strict time constraints.",
         highlights: ["Web Dev", "1st Prize"],
-        images: [],
+        images: [cryptex1],
         color: "text-vscode-yellow",
         bg: "bg-vscode-yellow/10",
         border: "border-vscode-yellow/30"
