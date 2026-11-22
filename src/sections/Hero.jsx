@@ -1,196 +1,178 @@
-import { useRef, useState, useEffect } from "react";
-import { motion, useScroll, useTransform, useSpring, useMotionValue } from "framer-motion";
-import FloatingElement from "../components/FloatingElement";
-import { Code, Database, Globe, Github, Linkedin, FileText } from "lucide-react";
+import { motion } from "framer-motion";
+import { ArrowRight, ArrowUpRight, FileText, Mail, MapPin } from "lucide-react";
 
-const MagneticSocialButton = ({ href, children, ariaLabel, className }) => {
-    const ref = useRef(null);
-    const x = useMotionValue(0);
-    const y = useMotionValue(0);
-
-    const springX = useSpring(x, { stiffness: 150, damping: 15 });
-    const springY = useSpring(y, { stiffness: 150, damping: 15 });
-
-    const handleMouseMove = (e) => {
-        const { clientX, clientY } = e;
-        const { left, top, width, height } = ref.current.getBoundingClientRect();
-        const centerX = left + width / 2;
-        const centerY = top + height / 2;
-        x.set((clientX - centerX) * 0.3);
-        y.set((clientY - centerY) * 0.3);
-    };
-
-    const handleMouseLeave = () => {
-        x.set(0);
-        y.set(0);
-    };
-
-    return (
-        <motion.a
-            ref={ref}
-            href={href}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={ariaLabel}
-            onMouseMove={handleMouseMove}
-            onMouseLeave={handleMouseLeave}
-            style={{ x: springX, y: springY }}
-            className={`group relative border border-white/20 text-white overflow-hidden flex items-center justify-center ${className || 'p-4 rounded-full'}`}
-        >
-            <span className="relative z-10 group-hover:text-black transition-colors duration-300 flex items-center gap-2">
-                {children}
-            </span>
-            <motion.div
-                className="absolute inset-0 bg-white z-0 origin-center scale-0 group-hover:scale-100 transition-transform duration-300 rounded-full"
-            />
-        </motion.a>
-    );
-};
+// const capabilities = [
+//     {
+//         title: "AUTONOMOUS SYSTEMS",
+//         description: "Multi-agent coordination, perception, and decision models for intelligent systems."
+//     },
+//     {
+//         title: "AGENTIC WORKFLOWS",
+//         description: "Cooperative LLM agent reasoning, factor weighting, and long-term memory streams."
+//     },
+//     {
+//         title: "QUANTITATIVE ENGINES",
+//         description: "Event-driven Backtrader architectures with chunked OHLCV database streaming."
+//     },
+//     {
+//         title: "LOCAL LLM & OFFLINE RAG",
+//         description: "Zero-API compliance pipelines deployed with quantized local models via Ollama."
+//     }
+// ];
 
 const Hero = () => {
-    const containerRef = useRef(null);
-    const { scrollYProgress } = useScroll({ target: containerRef });
-    const y = useTransform(scrollYProgress, [0, 1], [0, 100]);
-
-    // Typewriter State
-    const [text, setText] = useState("");
-    const [isDeleting, setIsDeleting] = useState(false);
-    const [loopNum, setLoopNum] = useState(0);
-    const [typingSpeed, setTypingSpeed] = useState(150);
-
-    const toRotate = ["Joshua V K", "Tech Enthusiast"];
-
-    useEffect(() => {
-        const handleType = () => {
-            const i = loopNum % toRotate.length;
-            const fullText = toRotate[i];
-
-            setText(isDeleting
-                ? fullText.substring(0, text.length - 1)
-                : fullText.substring(0, text.length + 1)
-            );
-
-            // Dynamic speed adjustments
-            let delta = isDeleting ? 50 : 150;
-
-            if (!isDeleting && text === fullText) {
-                // Finished typing, pause
-                delta = 2000;
-                setIsDeleting(true);
-            } else if (isDeleting && text === '') {
-                // Finished deleting, moving to next word
-                setIsDeleting(false);
-                setLoopNum(loopNum + 1);
-                delta = 500;
-            }
-
-            setTypingSpeed(delta);
-        };
-
-        const timer = setTimeout(handleType, typingSpeed);
-        return () => clearTimeout(timer);
-    }, [text, isDeleting, loopNum, typingSpeed]);
-
     return (
-        <section ref={containerRef} className="min-h-screen flex flex-col justify-center px-6 relative overflow-visible py-20">
-            <div className="container-width grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20 items-center">
+        <section className="pt-28 sm:pt-36 pb-16 sm:pb-24 px-5 sm:px-8 max-w-6xl mx-auto w-full">
 
-                {/* Text Content */}
+            {/* Top 3-Column Layout: Left Intro, Center Arch Photo, Right Metrics */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-center pb-16 sm:pb-20 border-b border-[#dedbd2]">
+
+                {/* Left Column: Heading & Introduction */}
                 <motion.div
-                    initial={{ opacity: 0, x: -50 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.8, ease: "easeOut" }}
-                    className="order-2 md:order-1 space-y-8 relative z-10"
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="lg:col-span-5 order-2 lg:order-1 space-y-6 text-center lg:text-left"
                 >
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-border bg-surfaceLight/50 backdrop-blur-sm text-xs font-mono text-secondary">
-                        <span className="w-2 h-2 rounded-full bg-vscode-green animate-pulse" />
-                        SYSTEM_ONLINE
-                    </div>
-
-                    <div className="space-y-2">
-                        <h1 className="text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight leading-tight text-primary min-h-[1.2em]">
-                            {text}<span className="animate-pulse ml-1 text-vscode-blue">|</span>
+                    <div className="space-y-1">
+                        <span className="text-sm font-sans text-stone-500 font-medium tracking-wide">
+                            Hey. I'm Joshua,
+                        </span>
+                        <h1 className="text-4xl sm:text-5xl xl:text-6xl font-extrabold uppercase tracking-tight text-stone-950 font-sans leading-[1.05]">
+                            AI/ML & <br />
+                            <span className="font-serif italic font-normal lowercase tracking-normal text-stone-800 text-4xl sm:text-5xl xl:text-[3.5rem] block -my-1">
+                                autonomous systems
+                            </span>
+                            RESEARCHER
                         </h1>
-                        <h2 className="text-xl md:text-2xl text-secondary/80 font-light">
-                            Full Stack Developer & <span className="text-vscode-blue font-normal">AI/ML Enthusiast</span>
-                        </h2>
                     </div>
 
-                    {/* <p className="text-base text-secondary max-w-lg leading-relaxed">
-                        Project Intern @Infinity Pool Finnotech | CSE @FCRIT 2026
-                    </p> */}
+                    <p className="text-stone-600 text-sm sm:text-base leading-relaxed font-normal max-w-md mx-auto lg:mx-0">
+                        Master's student at the University of Stuttgart specializing in Autonomous Systems, with a background in Computer Engineering.
+                    </p>
 
-                    <div className="flex flex-wrap items-center gap-3 pt-4">
-                        <MagneticSocialButton href="/Resume.pdf" ariaLabel="Resume" className="px-5 py-2.5 md:px-6 md:py-3 rounded-full">
-                            <FileText size={18} className="md:w-5 md:h-5" />
-                            <span className="font-medium text-sm md:text-base">Resume</span>
-                        </MagneticSocialButton>
-                        <MagneticSocialButton href="https://linkedin.com/in/joshuavinukoshy" ariaLabel="LinkedIn" className="p-3 md:p-4 rounded-full">
-                            <Linkedin size={20} className="md:w-6 md:h-6" />
-                        </MagneticSocialButton>
-                        <MagneticSocialButton href="https://github.com/Joshua16vinu" ariaLabel="GitHub" className="p-3 md:p-4 rounded-full">
-                            <Github size={20} className="md:w-6 md:h-6" />
-                        </MagneticSocialButton>
+                    {/* Action Pill Buttons (Matching reference image: Black pill + Outline pill) */}
+                    <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2.5 pt-2">
+                        <a
+                            href="#contact"
+                            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-stone-900 hover:bg-stone-800 text-white text-xs font-mono uppercase tracking-wider transition-all shadow-subtle group cursor-pointer"
+                        >
+                            <span>Contact Me</span>
+                            <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                        </a>
+
+                        <a
+                            href="/Resume.pdf"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2 px-5 py-3 rounded-full border border-stone-300 hover:border-stone-900 bg-white/70 hover:bg-white text-stone-900 text-xs font-mono uppercase tracking-wider transition-all shadow-subtle"
+                        >
+                            <FileText size={14} />
+                            <span>Resume</span>
+                            <ArrowUpRight size={13} />
+                        </a>
+
+                        <a
+                            href="https://beyondthemodelbyjoshua.substack.com/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2 px-5 py-3 rounded-full border border-stone-300 hover:border-stone-900 bg-white/70 hover:bg-white text-stone-900 text-xs font-mono uppercase tracking-wider transition-all shadow-subtle"
+                        >
+                            <span>Substack</span>
+                            <ArrowUpRight size={13} />
+                        </a>
                     </div>
                 </motion.div>
 
-                {/* Dynamic Image Container */}
-                <div className="order-1 md:order-2 flex justify-center md:justify-end relative">
-                    {/* Background Decorative Elements */}
-                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                        <motion.div
-                            animate={{ rotate: 360 }}
-                            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                            className="w-[300px] h-[300px] md:w-[400px] md:h-[400px] border border-white/5 rounded-full border-dashed"
-                        />
-                        <motion.div
-                            animate={{ rotate: -360 }}
-                            transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-                            className="absolute w-[250px] h-[250px] md:w-[350px] md:h-[350px] border border-white/5 rounded-full"
-                        />
-                    </div>
-
-                    {/* Floating Image Wrapper */}
-                    <FloatingElement delay={0} floatingAmplitude={20} duration={4}>
-                        <div className="relative z-10 group cursor-pointer">
-                            {/* Stylish Frame */}
-                            <div className="absolute -inset-1 bg-gradient-to-tr from-transparent via-white/20 to-transparent rounded-2xl md:rounded-[2rem] opacity-70 group-hover:opacity-100 transition-opacity duration-500 blur-sm" />
-
-                            <div className="relative w-56 h-56 md:w-80 md:h-[400px] overflow-hidden rounded-xl md:rounded-[1.5rem] border border-border bg-surface shadow-2xl">
+                {/* Center Column: The Signature Arch Photo Frame (Matching reference image) */}
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.6, delay: 0.1 }}
+                    className="lg:col-span-4 order-1 lg:order-2 flex justify-center"
+                >
+                    <div className="relative w-64 sm:w-72 md:w-80">
+                        {/* Arch container: rounded top, clean bottom */}
+                        <div className="relative w-full aspect-[3/4.2] rounded-t-full rounded-b-3xl overflow-hidden bg-[#e6e3db] border-2 border-[#d9d5cb] shadow-arch p-1.5">
+                            <div className="w-full h-full rounded-t-full rounded-b-[1.25rem] overflow-hidden bg-stone-200">
                                 <img
                                     src="/profile.jpg"
                                     alt="Joshua Vinu Koshy"
-                                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                    className="w-full h-full object-cover object-top hover:scale-[1.03] transition-transform duration-700 ease-out"
                                 />
-                                {/* Overlay Gradient */}
-                                <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent opacity-60" />
-
-                                {/* Tech overlays on image */}
-                                <div className="absolute bottom-4 left-4 font-mono text-[10px] text-white/50 space-y-1">
-                                    <p>STATUS: ACTIVE</p>
-                                    <p>LOC: 19.0330° N, 73.0297° E</p>
-                                </div>
                             </div>
-
-                            {/* Floating Tech Icons */}
-                            <FloatingElement delay={1} floatingAmplitude={10} duration={3} className="absolute -left-8 top-12 p-3 bg-surfaceLight border border-border rounded-lg shadow-xl text-vscode-blue">
-                                <Code size={20} />
-                            </FloatingElement>
-                            <FloatingElement delay={2} floatingAmplitude={12} duration={4} className="absolute -right-6 bottom-20 p-3 bg-surfaceLight border border-border rounded-lg shadow-xl text-vscode-purple">
-                                <Database size={20} />
-                            </FloatingElement>
-                            <FloatingElement delay={1.5} floatingAmplitude={8} duration={5} className="absolute right-8 -top-6 p-3 bg-surfaceLight border border-border rounded-lg shadow-xl text-vscode-green">
-                                <Globe size={20} />
-                            </FloatingElement>
                         </div>
-                    </FloatingElement>
-                </div>
+
+                        {/* Minimalist location badge */}
+                        <div className="mt-3 text-center">
+                            <span className="inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-widest text-stone-500">
+                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" />
+                                Stuttgart, Germany · Uni Stuttgart
+                            </span>
+                        </div>
+                    </div>
+                </motion.div>
+
+                {/* Right Column: Stacked Editorial Metrics (Matching reference image) */}
+                <motion.div
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                    className="lg:col-span-3 order-3 flex flex-row lg:flex-col justify-around lg:justify-center gap-6 lg:gap-7 text-center lg:text-right border-t lg:border-t-0 pt-6 lg:pt-0 border-[#dedbd2]"
+                >
+                    <div className="space-y-0.5">
+                        <div className="text-3xl sm:text-4xl font-extrabold text-stone-950 font-sans tracking-tight">
+                            #1
+                        </div>
+                        <div className="text-[11px] font-mono uppercase tracking-wider text-stone-500">
+                            Rank in Cohort
+                        </div>
+                    </div>
+
+                    <div className="space-y-0.5">
+                        <div className="text-3xl sm:text-4xl font-extrabold text-stone-950 font-sans tracking-tight">
+                            9.77
+                        </div>
+                        <div className="text-[11px] font-mono uppercase tracking-wider text-stone-500">
+                            Graduating CGPA
+                        </div>
+                    </div>
+
+                    <div className="space-y-0.5">
+                        <div className="text-3xl sm:text-4xl font-extrabold text-stone-950 font-sans tracking-tight">
+                            3+
+                        </div>
+                        <div className="text-[11px] font-mono uppercase tracking-wider text-stone-500">
+                            Research Papers
+                        </div>
+                    </div>
+
+                    <div className="space-y-0.5">
+                        <div className="text-3xl sm:text-4xl font-extrabold text-stone-950 font-sans tracking-tight">
+                            Oct '26
+                        </div>
+                        <div className="text-[11px] font-mono uppercase tracking-wider text-stone-500">
+                            MSc Autonomous Systems
+                        </div>
+                    </div>
+                </motion.div>
+
             </div>
 
-            {/* <motion.div style={{ y }} className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-50"> */}
-            {/* <div className="w-[1px] h-12 bg-gradient-to-b from-transparent via-white to-transparent" /> */}
-            {/* <span className="text-[10px] uppercase tracking-widest text-white/50">Scroll</span> */}
-            {/* </motion.div> */}
+            {/* Bottom 4-Column Minimal Capabilities Bar (Matching reference image) */}
+            {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pt-10 sm:pt-14">
+                {capabilities.map((cap, idx) => (
+                    <div key={idx} className="space-y-1.5 text-center sm:text-left">
+                        <h2 className="text-xs font-mono font-bold uppercase tracking-wider text-stone-950">
+                            {cap.title}
+                        </h2>
+                        <p className="text-xs text-stone-600 leading-relaxed font-normal">
+                            {cap.description}
+                        </p>
+                    </div>
+                ))}
+            </div> */}
+
         </section>
     );
 };

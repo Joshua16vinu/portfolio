@@ -1,6 +1,7 @@
 import { motion, useScroll, useMotionValueEvent, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
+import { ArrowUpRight, X, FileText } from "lucide-react";
 
 const NavLink = ({ href, children, onClick }) => {
     const handleClick = (e) => {
@@ -22,26 +23,13 @@ const NavLink = ({ href, children, onClick }) => {
         <a
             href={href}
             onClick={handleClick}
-            className="relative hover:text-vscode-blue transition-colors duration-300 cursor-pointer"
+            className="text-xs font-mono uppercase tracking-widest text-stone-600 hover:text-stone-950 transition-colors py-1 relative group cursor-pointer"
         >
-            <span className="inline-block transition-transform duration-300 hover:-translate-y-1">
-                {children}
-            </span>
+            <span>{children}</span>
+            <span className="absolute bottom-0 left-0 w-0 h-[1.5px] bg-stone-900 transition-all duration-200 group-hover:w-full" />
         </a>
     );
 };
-
-const MenuIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <line x1="4" x2="20" y1="12" y2="12" /><line x1="4" x2="20" y1="6" y2="6" /><line x1="4" x2="20" y1="18" y2="18" />
-    </svg>
-);
-
-const XIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M18 6 6 18" /><path d="m6 6 18 18" />
-    </svg>
-);
 
 const MobileMenu = ({ isOpen, onClose, links }) => {
     if (typeof document === 'undefined') return null;
@@ -53,36 +41,81 @@ const MobileMenu = ({ isOpen, onClose, links }) => {
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
-                    className="fixed inset-0 bg-black/98 backdrop-blur-xl z-[9999] flex flex-col pointer-events-auto"
+                    transition={{ duration: 0.25 }}
+                    className="fixed inset-0 bg-[#f2f0ea]/98 backdrop-blur-xl z-[9999] flex flex-col p-6 sm:p-10 pointer-events-auto"
                 >
-                    {/* Header with Close Button */}
-                    <div className="flex justify-between items-center px-6 py-6 border-b border-white/10">
-                        <span className="text-sm font-bold tracking-tight text-white logo-font">
-                            JOSHUA.DEV
-                        </span>
+                    {/* Header */}
+                    <div className="flex justify-between items-center pb-6 border-b border-[#dedbd2]">
+                        <div className="flex items-center gap-2">
+                            <span className="w-2 h-2 rounded-full bg-emerald-600" />
+                            <span className="text-sm font-bold uppercase tracking-wider text-stone-950 font-sans">
+                                Joshua Vinu Koshy
+                            </span>
+                        </div>
                         <button
                             onClick={onClose}
-                            className="p-2 -mr-2 text-white hover:text-vscode-blue transition-colors"
+                            className="p-2.5 text-stone-700 hover:text-stone-950 rounded-full border border-[#dedbd2] bg-white transition-colors cursor-pointer"
+                            aria-label="Close menu"
                         >
-                            <XIcon />
+                            <X size={18} />
                         </button>
                     </div>
 
-                    {/* Links */}
-                    <div className="flex flex-col gap-6 font-mono text-xl text-white items-center justify-center flex-grow p-6">
-                        {links.map((link) => (
-                            <NavLink
+                    {/* Nav Links List */}
+                    <div className="flex flex-col gap-6 justify-center flex-grow py-8 font-sans">
+                        {links.map((link, idx) => (
+                            <a
                                 key={link.label}
                                 href={link.href}
-                                onClick={onClose}
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    onClose();
+                                    const element = document.getElementById(link.href.replace("#", ""));
+                                    if (element) element.scrollIntoView({ behavior: "smooth" });
+                                }}
+                                className="text-2xl sm:text-3xl font-bold uppercase tracking-tight text-stone-900 hover:text-stone-600 transition-colors flex items-center justify-between group"
                             >
-                                {link.label}
-                            </NavLink>
+                                <span>{link.label}</span>
+                                <span className="text-xs font-mono text-stone-400 group-hover:text-stone-900 transition-colors">
+                                    0{idx + 1}
+                                </span>
+                            </a>
                         ))}
                     </div>
 
-                    <div className="p-6 text-center text-secondary/40 text-xs font-mono border-t border-white/10">
-                        © 2024 JOSHUA V K
+                    {/* Footer Actions */}
+                    <div className="pt-6 border-t border-[#dedbd2] flex flex-col sm:flex-row justify-between items-center gap-4 text-xs font-mono text-stone-600">
+                        <div className="flex items-center gap-3">
+                            <a
+                                href="https://beyondthemodelbyjoshua.substack.com/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="hover:text-stone-950 transition-colors inline-flex items-center gap-1"
+                            >
+                                <span>Substack</span>
+                                <ArrowUpRight size={12} />
+                            </a>
+                            <span>•</span>
+                            <a
+                                href="https://github.com/Joshua16vinu"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="hover:text-stone-950 transition-colors inline-flex items-center gap-1"
+                            >
+                                <span>GitHub</span>
+                                <ArrowUpRight size={12} />
+                            </a>
+                        </div>
+                        <a
+                            href="/Resume.pdf"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-stone-900 text-white font-medium hover:bg-stone-800 transition-colors"
+                        >
+                            <FileText size={14} />
+                            <span>Download Resume (PDF)</span>
+                            <ArrowUpRight size={13} />
+                        </a>
                     </div>
                 </motion.div>
             )}
@@ -93,19 +126,13 @@ const MobileMenu = ({ isOpen, onClose, links }) => {
 
 const Navbar = () => {
     const { scrollY } = useScroll();
-    const [hidden, setHidden] = useState(false);
+    const [scrolled, setScrolled] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
     useMotionValueEvent(scrollY, "change", (latest) => {
-        const previous = scrollY.getPrevious();
-        if (latest > previous && latest > 150) {
-            setHidden(true);
-        } else {
-            setHidden(false);
-        }
+        setScrolled(latest > 50);
     });
 
-    // Lock body scroll when menu is open
     useEffect(() => {
         if (mobileMenuOpen) {
             document.body.style.overflow = 'hidden';
@@ -116,45 +143,67 @@ const Navbar = () => {
     }, [mobileMenuOpen]);
 
     const navLinks = [
-        { href: "#about", label: "ABOUT" },
-        { href: "#experience", label: "JOURNEY" },
-        { href: "#projects", label: "WORK" },
-        { href: "#skills", label: "TECH" },
-        { href: "#leadership", label: "LEADERSHIP" },
-        { href: "#achievements", label: "AWARDS" },
-        { href: "#contact", label: "CONTACT" },
+        { href: "#about", label: "About" },
+        { href: "#research", label: "Research" },
+        { href: "#experience", label: "Experience" },
+        { href: "#projects", label: "Projects" },
+        { href: "#skills", label: "Skills" },
+        { href: "#achievements", label: "Honors" },
+        { href: "#contact", label: "Contact" },
     ];
 
     return (
         <>
-            <motion.nav
-                variants={{
-                    visible: { y: 0 },
-                    hidden: { y: "-100%" },
-                }}
-                animate={hidden ? "hidden" : "visible"}
-                transition={{ duration: 0.35, ease: "easeInOut" }}
-                className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-6 py-6 bg-background/80 backdrop-blur-sm pointer-events-none"
+            <header
+                className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+                    scrolled
+                        ? "bg-[#f2f0ea]/90 backdrop-blur-md border-b border-[#dedbd2] py-3.5 shadow-sm"
+                        : "bg-transparent py-5 sm:py-6"
+                }`}
             >
-                <a href="#" className="text-sm font-bold tracking-tight pointer-events-auto mix-blend-difference text-white logo-font hover:scale-105 transition-transform z-50">
-                    JOSHUA.DEV
-                </a>
+                <div className="max-w-6xl mx-auto px-5 sm:px-8 flex justify-between items-center">
+                    
+                    {/* Brand Identifier (Exact reference style: • DOMINIC style) */}
+                    <a href="#" className="flex items-center gap-2.5 group cursor-pointer">
+                        <span className="w-2.5 h-2.5 rounded-full bg-stone-900 group-hover:scale-125 transition-transform" />
+                        <span className="text-sm font-extrabold uppercase tracking-widest text-stone-950 font-sans">
+                            Joshua Vinu Koshy
+                        </span>
+                    </a>
 
-                {/* Desktop Menu */}
-                <div className="hidden md:flex gap-8 font-mono text-xs text-white mix-blend-difference pointer-events-auto">
-                    {navLinks.map((link) => (
-                        <NavLink key={link.label} href={link.href}>{link.label}</NavLink>
-                    ))}
+                    {/* Un-congested Desktop Navigation (Clean, spacious core links) */}
+                    <nav className="hidden lg:flex items-center gap-8 xl:gap-10">
+                        {navLinks.map((link) => (
+                            <NavLink key={link.label} href={link.href}>
+                                {link.label}
+                            </NavLink>
+                        ))}
+                    </nav>
+
+                    {/* Right Side: Clean Pill Buttons (Matching reference image) */}
+                    <div className="flex items-center gap-3">
+                        <a
+                            href="/Resume.pdf"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-stone-300 hover:border-stone-900 bg-white/70 text-xs font-mono uppercase tracking-wider text-stone-900 hover:bg-white transition-all shadow-subtle"
+                        >
+                            <span>Resume</span>
+                            <ArrowUpRight size={13} />
+                        </a>
+
+                        <button
+                            onClick={() => setMobileMenuOpen(true)}
+                            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-stone-900 hover:bg-stone-800 text-white text-xs font-mono uppercase tracking-wider transition-all cursor-pointer shadow-subtle"
+                            aria-label="Toggle menu"
+                        >
+                            <span>Menu</span>
+                            <span className="font-mono text-sm leading-none">☰</span>
+                        </button>
+                    </div>
+
                 </div>
-
-                {/* Mobile Menu Toggle */}
-                <button
-                    onClick={() => setMobileMenuOpen(true)}
-                    className="md:hidden pointer-events-auto text-white z-50 mix-blend-difference"
-                >
-                    <MenuIcon />
-                </button>
-            </motion.nav>
+            </header>
 
             <MobileMenu
                 isOpen={mobileMenuOpen}

@@ -1,135 +1,170 @@
-import { motion, useSpring, useMotionValue, useTransform } from "framer-motion";
-import { MoveRight, Mail } from "lucide-react";
-import FloatingElement from "../components/FloatingElement";
-import { useRef } from "react";
-
-const MagneticButton = ({ children }) => {
-    const ref = useRef(null);
-    const x = useMotionValue(0);
-    const y = useMotionValue(0);
-
-    const springX = useSpring(x, { stiffness: 150, damping: 15 });
-    const springY = useSpring(y, { stiffness: 150, damping: 15 });
-
-    const handleMouseMove = (e) => {
-        const { clientX, clientY } = e;
-        const { left, top, width, height } = ref.current.getBoundingClientRect();
-        const centerX = left + width / 2;
-        const centerY = top + height / 2;
-        x.set((clientX - centerX) * 0.3);
-        y.set((clientY - centerY) * 0.3);
-    };
-
-    const handleMouseLeave = () => {
-        x.set(0);
-        y.set(0);
-    };
-
-    return (
-        <motion.a
-            ref={ref}
-            href="mailto:joshuvk16@gmail.com"
-            onMouseMove={handleMouseMove}
-            onMouseLeave={handleMouseLeave}
-            style={{ x: springX, y: springY }}
-            className="group relative inline-flex items-center gap-4 px-8 py-4 bg-white text-black font-medium text-lg rounded-full overflow-hidden"
-        >
-            <span className="relative z-10 flex items-center gap-2">
-                Send an Email <Mail size={18} />
-            </span>
-            <motion.div
-                className="absolute inset-0 bg-blue-400 z-0 origin-left"
-                initial={{ scaleX: 0 }}
-                whileHover={{ scaleX: 1 }}
-                transition={{ duration: 0.3 }}
-            />
-        </motion.a>
-    );
-};
+import { useState } from "react";
+import { Mail, MapPin, Copy, Check, Linkedin, Github, FileText, Clock, Briefcase, ArrowUpRight } from "lucide-react";
 
 const Contact = () => {
+    const [copiedEmail, setCopiedEmail] = useState(false);
+
+    const handleCopyEmail = () => {
+        navigator.clipboard.writeText("joshuvk16@gmail.com");
+        setCopiedEmail(true);
+        setTimeout(() => setCopiedEmail(false), 2000);
+    };
+
     return (
-        <section id="contact" className="min-h-[60vh] flex flex-col justify-center px-6 relative overflow-hidden py-24">
-            {/* Background Glow */}
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent to-blue-900/10 pointer-events-none" />
-
-            <div className="container-width relative z-10">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24 items-center">
-                    <div className="space-y-6">
-                        <div>
-                            <h2 className="text-sm font-mono text-vscode-green uppercase tracking-widest mb-4">
-                                // 07 Initialize Handshake
-                            </h2>
-                            <h3 className="text-5xl md:text-6xl lg:text-7xl font-bold text-primary leading-tight tracking-tight">
-                                Ready to <br />
-                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-vscode-blue to-vscode-teal">Ignite?</span>
-                            </h3>
+        <section id="contact" className="py-20 sm:py-28 px-5 sm:px-8 border-t border-[#dedbd2]">
+            <div className="max-w-6xl mx-auto">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+                    
+                    {/* Left Column */}
+                    <div className="lg:col-span-5 space-y-4">
+                        <div className="text-xs font-mono uppercase tracking-widest text-stone-500">
+                            09 // Direct Communication
                         </div>
-
-                        <p className="text-secondary text-lg max-w-lg leading-relaxed">
-                            Whether it's an AI breakthrough, a SaaS product, or a technical inquiry; I'm always open to discussing new frontiers.
+                        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold uppercase tracking-tight text-stone-950 font-sans leading-[1.08]">
+                            Let's Connect & <br />
+                            <span className="font-serif italic font-normal lowercase tracking-normal text-stone-800 text-3xl sm:text-4xl lg:text-[2.75rem]">
+                                collaborate in stuttgart
+                            </span>
+                        </h2>
+                        <p className="text-stone-600 text-sm leading-relaxed">
+                            Open to discussing Werkstudent opportunities, HiWi research assistant roles, thesis inquiries, and software engineering collaborations.
                         </p>
 
-                        <div className="pt-6">
-                            <MagneticButton />
-                            <p className="mt-6 text-sm font-mono text-secondary/60 flex items-center gap-2">
-                                <span className="w-2 h-2 rounded-full bg-vscode-green animate-pulse" />
-                                VOICE_LINK_ACTIVE: <span className="text-primary hover:text-vscode-blue transition-colors cursor-pointer">+91 8657406860</span>
+                        <div className="p-5 rounded-2xl bg-white border border-[#dedbd2] space-y-2 text-xs">
+                            <div className="font-bold text-stone-900 font-mono uppercase tracking-wider flex items-center gap-2">
+                                <Briefcase size={14} className="text-emerald-700" />
+                                Werkstudent Availability
+                            </div>
+                            <p className="text-stone-600 leading-relaxed font-normal">
+                                Available for 20 hours/week during semester lecture periods, and full-time during university breaks. Based in Stuttgart, Germany (On-site, Hybrid, or Remote).
                             </p>
                         </div>
                     </div>
 
-                    <div className="relative hidden md:flex justify-center">
-                        <FloatingElement delay={1} duration={8} floatingAmplitude={15}>
-                            <div className="relative z-10 p-8 border border-border bg-surfaceLight/80 backdrop-blur-md rounded-2xl w-full max-w-sm mx-auto flex flex-col justify-between gap-12 group hover:border-vscode-blue/50 transition-colors shadow-2xl">
-                                <div className="space-y-3">
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-3 h-3 rounded-full bg-vscode-blue animate-pulse shadow-[0_0_10px_rgba(86,156,214,0.5)]" />
-                                        <p className="font-mono text-xs text-vscode-blue tracking-wider">SYSTEM.STATUS</p>
-                                    </div>
-                                    <p className="font-mono text-2xl text-primary">ONLINE</p>
+                    {/* Right Column: Direct Channels (Zero phone number) */}
+                    <div className="lg:col-span-7 space-y-6">
+                        
+                        {/* Email Card */}
+                        <div className="p-6 sm:p-8 rounded-2xl bg-white border border-[#dedbd2] shadow-sm space-y-4">
+                            <div className="flex items-center justify-between">
+                                <div className="text-xs font-mono uppercase tracking-wider text-stone-500">
+                                    Primary Email Address
                                 </div>
+                                <button
+                                    onClick={handleCopyEmail}
+                                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-stone-300 hover:border-stone-900 text-stone-800 text-xs font-mono transition-colors cursor-pointer"
+                                >
+                                    {copiedEmail ? (
+                                        <>
+                                            <Check size={12} className="text-emerald-700" />
+                                            <span className="text-emerald-700 font-medium">Copied!</span>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Copy size={12} />
+                                            <span>Copy email</span>
+                                        </>
+                                    )}
+                                </button>
+                            </div>
 
-                                <div className="space-y-4">
-                                    <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-vscode-gray/20 to-transparent" />
-                                    <div className="grid grid-cols-2 gap-4 text-sm font-mono text-secondary">
-                                        <div className="space-y-1">
-                                            <span className="text-xs text-secondary/50">LOCATION</span>
-                                            <p className="text-vscode-orange">"NAVI MUMBAI"</p>
-                                        </div>
-                                        <div className="space-y-1">
-                                            <span className="text-xs text-secondary/50">TIMEZONE</span>
-                                            <p className="text-vscode-orange">"IST (UTC+5:30)"</p>
-                                        </div>
-                                    </div>
+                            <a
+                                href="mailto:joshuvk16@gmail.com"
+                                className="text-xl sm:text-2xl font-bold text-stone-950 hover:text-stone-600 transition-colors block font-sans"
+                            >
+                                joshuvk16@gmail.com
+                            </a>
+
+                            <div className="text-xs text-stone-500 font-mono">
+                                Inquiries typically answered within 24 hours.
+                            </div>
+                        </div>
+
+                        {/* Location & Timezone Details */}
+                        <div className="p-6 sm:p-7 rounded-2xl bg-white border border-[#dedbd2] shadow-sm space-y-3">
+                            <div className="text-xs font-mono uppercase tracking-wider text-stone-500">
+                                Location & Timezone
+                            </div>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 font-mono text-xs text-stone-700 pt-1">
+                                <div className="space-y-1">
+                                    <span className="text-stone-400 text-[10px] uppercase">CITY & STATE</span>
+                                    <p className="font-semibold text-stone-950 flex items-center gap-1.5">
+                                        <MapPin size={13} className="text-stone-900" />
+                                        Stuttgart, Baden-Württemberg, Germany
+                                    </p>
+                                </div>
+                                <div className="space-y-1">
+                                    <span className="text-stone-400 text-[10px] uppercase">TIME ZONE</span>
+                                    <p className="font-semibold text-stone-950 flex items-center gap-1.5">
+                                        <Clock size={13} className="text-stone-900" />
+                                        CET / CEST (UTC+1)
+                                    </p>
                                 </div>
                             </div>
-                        </FloatingElement>
+                        </div>
 
-                        {/* Decorative background elements behind card */}
-                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-vscode-blue/10 blur-[80px] pointer-events-none rounded-full" />
-                    </div>
-                </div>
+                        {/* Social & Resume Links */}
+                        <div className="p-6 sm:p-7 rounded-2xl bg-white border border-[#dedbd2] shadow-sm flex flex-wrap items-center justify-between gap-4">
+                            <div className="space-y-0.5">
+                                <h4 className="text-sm font-bold text-stone-950 font-sans">
+                                    Profiles & Verification
+                                </h4>
+                                <p className="text-xs text-stone-500 font-mono">
+                                    Connect on professional networks or review source code.
+                                </p>
+                            </div>
 
-                <div className="mt-32 pt-8 border-t border-border flex flex-col md:flex-row justify-center items-center gap-6">
-                    <div className="flex gap-8">
-                        <a href="https://linkedin.com/in/joshuavinukoshy" className="text-xs font-mono text-secondary hover:text-white transition-colors flex items-center gap-2">
-                            LINKEDIN <ArrowUpRightIcon />
-                        </a>
-                        <a href="https://github.com/Joshua16vinu" className="text-xs font-mono text-secondary hover:text-white transition-colors flex items-center gap-2">
-                            GITHUB <ArrowUpRightIcon />
-                        </a>
+                            <div className="flex flex-wrap items-center gap-3">
+                                <a
+                                    href="https://linkedin.com/in/joshuavinukoshy"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-stone-300 hover:border-stone-900 text-stone-900 text-xs font-mono uppercase tracking-wider transition-colors"
+                                >
+                                    <Linkedin size={13} />
+                                    <span>LinkedIn</span>
+                                    <ArrowUpRight size={12} />
+                                </a>
+
+                                <a
+                                    href="https://github.com/Joshua16vinu"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-stone-300 hover:border-stone-900 text-stone-900 text-xs font-mono uppercase tracking-wider transition-colors"
+                                >
+                                    <Github size={13} />
+                                    <span>GitHub</span>
+                                    <ArrowUpRight size={12} />
+                                </a>
+
+                                <a
+                                    href="https://beyondthemodelbyjoshua.substack.com/"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-stone-300 hover:border-stone-900 text-stone-900 text-xs font-mono uppercase tracking-wider transition-colors"
+                                >
+                                    <FileText size={13} />
+                                    <span>Substack</span>
+                                    <ArrowUpRight size={12} />
+                                </a>
+
+                                <a
+                                    href="/Resume.pdf"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-stone-900 text-white hover:bg-stone-800 text-xs font-mono uppercase tracking-wider transition-colors"
+                                >
+                                    <FileText size={13} />
+                                    <span>Download Resume</span>
+                                </a>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
         </section>
     );
 };
-
-const ArrowUpRightIcon = () => (
-    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M7 17l9.2-9.2M17 17V7H7" />
-    </svg>
-);
 
 export default Contact;

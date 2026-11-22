@@ -1,11 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-
   html,
   body,
   #root {
@@ -15,16 +14,42 @@
 
   html {
     scroll-behavior: smooth;
+    color-scheme: light;
   }
 
   body {
     @apply bg-background text-primary font-sans antialiased;
+    background-color: #f2f0ea;
+    color: #18181b;
+  }
+
+  /* Selection style */
+  ::selection {
+    background-color: #18181b;
+    color: #ffffff;
   }
 }
 
 @layer utilities {
   .container-width {
-    @apply max-w-5xl mx-auto px-6;
+    @apply max-w-6xl mx-auto px-5 sm:px-8;
+  }
+
+  .editorial-divider {
+    height: 1px;
+    background: #dedbd2;
+  }
+
+  .editorial-card {
+    background-color: #ffffff;
+    border: 1px solid #dedbd2;
+  }
+
+  .arch-frame {
+    border-top-left-radius: 9999px;
+    border-top-right-radius: 9999px;
+    border-bottom-left-radius: 1.5rem;
+    border-bottom-right-radius: 1.5rem;
   }
 
   .scrollbar-hide::-webkit-scrollbar {
@@ -44,7 +69,5 @@
 
 * {
   -ms-overflow-style: none;
-  /* IE and Edge */
   scrollbar-width: none;
-  /* Firefox */
 }

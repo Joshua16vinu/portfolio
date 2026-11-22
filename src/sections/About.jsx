@@ -1,59 +1,52 @@
 import { motion } from "framer-motion";
-import FloatingElement from "../components/FloatingElement";
+import { ArrowRight, CheckCircle2, MapPin, Briefcase } from "lucide-react";
 
 const About = () => {
     return (
-        <section id="about" className="py-32 px-6 relative">
-            {/* Decorative Floating Element */}
-            <div className="absolute right-[10%] top-[20%] pointer-events-none opacity-20 hidden md:block">
-                <FloatingElement duration={8} floatingAmplitude={30}>
-                    <div className="w-64 h-64 border border-blue-500/30 rounded-full" />
-                </FloatingElement>
-            </div>
+        <section id="about" className="py-20 sm:py-28 px-5 sm:px-8 border-t border-[#dedbd2]">
+            <div className="max-w-6xl mx-auto">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
 
-            <div className="absolute left-[5%] bottom-[10%] pointer-events-none opacity-20 hidden md:block">
-                <FloatingElement duration={10} floatingAmplitude={20} delay={1}>
-                    <div className="w-48 h-48 border border-purple-500/30 rounded-full border-dashed" />
-                </FloatingElement>
-            </div>
+                    {/* Left Column: Bold Headline & Editorial Label */}
+                    <div className="lg:col-span-5 space-y-4">
+                        <div className="text-xs font-mono uppercase tracking-widest text-stone-500">
+                            01 // Academic & Engineering Profile
+                        </div>
+                        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold uppercase tracking-tight text-stone-950 font-sans leading-[1.08]">
+                            Engineering Autonomy & <br />
+                            <span className="font-serif italic font-normal lowercase tracking-normal text-stone-800 text-3xl sm:text-4xl lg:text-[2.75rem]">
+                                computational rigor
+                            </span>
+                        </h2>
 
-            <div className="container-width grid grid-cols-1 md:grid-cols-12 gap-12 relative z-10">
-                <div className="md:col-span-4">
-                    <h2 className="text-sm font-mono text-secondary sticky top-24 uppercase tracking-widest">
-                        01 // About
-                    </h2>
-                </div>
+                        <div className="pt-4 border-t border-[#dedbd2] space-y-2 text-xs font-mono text-stone-600">
+                            <div className="flex items-center gap-2">
+                                <MapPin size={13} className="text-stone-900" />
+                                <span>Based in Stuttgart, Baden-Württemberg, Germany</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <Briefcase size={13} className="text-emerald-700" />
+                                <span>Eligible for 20h/week Werkstudent / HiWi employment</span>
+                            </div>
+                        </div>
+                    </div>
 
-                <div className="md:col-span-8 space-y-8">
-                    {/* <h3 className="text-3xl md:text-4xl font-medium leading-tight text-white">
-                        Hi, I’m <span className="text-white">Joshua Vinu Koshy</span>.
-                    </h3> */}
-
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6 }}
-                        className="space-y-6 text-lg text-secondary leading-relaxed max-w-3xl font-sans"
-                    >
+                    {/* Right Column: Editorial Paragraphs */}
+                    <div className="lg:col-span-7 space-y-6 text-stone-700 text-sm sm:text-base leading-relaxed font-normal">
                         <p>
-                            I’m a final-year <span className="text-vscode-teal font-medium">Computer Engineering student</span> at FCRIT, Mumbai, with a near-perfect CGPA and a passion for engineering high-performance systems.
-                            My work lives at the intersection of <span className="text-vscode-blue font-medium">FinTech</span> and <span className="text-vscode-purple font-medium">Agentic AI</span>.
+                            I am an incoming <strong className="text-stone-950 font-semibold">Master of Science in Computer Science student at the University of Stuttgart</strong> (Winter Intake, Autonomous Systems track), having graduated <strong className="text-stone-950 font-semibold">Rank #1</strong> in Computer Engineering with Honors in AI & ML).
                         </p>
                         <p>
-                            Currently, as a Project Intern at <span className="text-vscode-orange font-medium">InfinityPool Finnotech</span>, I architect multi-agent AI workflows and quantitative trading engines.
-                            I've also led the end-to-end revamp of my university's digital infrastructure, serving thousands of users.
+                            My engineering work bridges <strong className="text-stone-950 font-semibold">system autonomy, high throughput, and algorithmic precision</strong>. At InfinityPool Finnotech, I architected an event-driven backtesting engine with Backtrader that evaluates multi-timeframe equity portfolios with real-time market feeds and agentic AI memory pipelines.
                         </p>
                         <p>
-                            Beyond coding, I head the AI & Deep Learning Club at my college and speak at workshops to mentor the next generation of developers.
-                            I'm always looking for ways to turn complex problems into scalable, production-ready solutions.
+                            Alongside industry software development, I actively conduct peer-reviewed research in machine learning anomaly detection, multi-agent financial systems, and foundation models in healthcare. At Hack IITK 2026, my team won 3rd place out of 9,000+ participants for building an offline policy gap analysis engine using local LLMs deployed via Ollama without any cloud dependencies.
                         </p>
-                    </motion.div>
+                        <p>
+                            Currently in Stuttgart, I am seeking <strong className="text-stone-950 font-semibold">Werkstudent (Working Student) and Research Assistant (HiWi)</strong> opportunities in AI/ML, autonomous systems, data engineering, and backend software engineering.
+                        </p>
+                    </div>
 
-                    {/* <div className="pt-8">
-                        <a href="#contact" className="inline-flex items-center gap-2 text-white border-b border-white pb-1 hover:opacity-50 transition-opacity">
-                            Available for opportunities
-                        </a>
-                    </div> */}
                 </div>
             </div>
         </section>
