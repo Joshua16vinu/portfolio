@@ -90,6 +90,32 @@ const Research = () => {
                         <p className="text-stone-600 text-sm leading-relaxed">
                             Research papers indexed and presented at IEEE conferences, addressing machine learning anomaly detection, multi-agent LLM systems, and autonomous health systems.
                         </p>
+                        <div className="pt-1 flex flex-wrap gap-2">
+                            <a
+                                href="https://scholar.google.com/citations?hl=en&user=0xhyCuYAAAAJ"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-stone-300 hover:border-stone-900 text-stone-700 hover:text-stone-900 text-xs font-mono uppercase tracking-wider transition-colors"
+                            >
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6L23 9 12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z"/>
+                                </svg>
+                                Google Scholar
+                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M7 17L17 7M7 7h10v10"/></svg>
+                            </a>
+                            <a
+                                href="https://orcid.org/0009-0007-7608-289X"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-stone-300 hover:border-stone-900 text-stone-700 hover:text-stone-900 text-xs font-mono uppercase tracking-wider transition-colors"
+                            >
+                                <svg width="12" height="12" viewBox="0 0 256 256" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M128 0C57.3 0 0 57.3 0 128s57.3 128 128 128 128-57.3 128-128S198.7 0 128 0zM86.3 186.2H70.9V79.1h15.4zm-7.7-119.4c-4.9 0-8.9-4-8.9-8.9s4-8.9 8.9-8.9 8.9 4 8.9 8.9-4 8.9-8.9 8.9zm113.1 119.4h-15.4v-55.4c0-5.8-.1-13.3-8.1-13.3-8.1 0-9.4 6.3-9.4 12.9v55.8h-15.4V79.1h14.8v6.8h.2c2.1-3.9 7.1-8.1 14.6-8.1 15.6 0 18.5 10.3 18.5 23.6v84.8z"/>
+                                </svg>
+                                ORCID&nbsp;<span className="opacity-60">0009-0007-7608-289X</span>
+                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M7 17L17 7M7 7h10v10"/></svg>
+                            </a>
+                        </div>
                     </div>
 
                     {/* Right Column: Publication Cards */}
